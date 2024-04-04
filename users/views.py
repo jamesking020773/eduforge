@@ -82,23 +82,23 @@ def create_admin(request):
     if request.method == "POST":
         form = AdminCreationForm(request.POST)
         if form.is_valid():
-            firstname = form.cleaned_data['firstname']
+            first_name = form.cleaned_data['first_name']
             surname = form.cleaned_data['surname']
             email = form.cleaned_data['email']
             school = form.cleaned_data['school_id']
             # Check if a user with this email already exists
-            user, user_created = User.objects.get_or_create(email=email, defaults={'username': email, 'first_name': firstname, 'last_name': surname})
+            user, user_created = User.objects.get_or_create(email=email, defaults={'username': email, 'first_name': first_name, 'last_name': surname})
             if user_created:
                 user.set_password("P@ssword!23")
                 user.save()
             else:
                 # If the user exists, update user details
-                user.firstname = firstname
+                user.first_name = first_name
                 user.surname = surname
                 user.save()
             # Create or update UserProfile
             profile, _ = UserProfile.objects.get_or_create(user=user, defaults={'user_type': 'admin'})
-            profile.firstname = firstname
+            profile.first_name = first_name
             profile.surname = surname
             profile.email = email
             profile.user_type = 'admin'
@@ -122,7 +122,7 @@ def create_teacher(request):
     if request.method == 'POST':
         form = TeacherCreationForm(request.POST)
         if form.is_valid():
-            firstname = form.cleaned_data['firstname']
+            first_name = form.cleaned_data['first_name']
             surname = form.cleaned_data['surname']
             email = form.cleaned_data['email']
             subjects = form.cleaned_data['subjects']
@@ -130,7 +130,7 @@ def create_teacher(request):
             # Create or get the user with the provided email
             teacher_user, created = User.objects.get_or_create(
                 email=email,
-                defaults={'username': email, 'first_name': firstname, 'last_name': surname}
+                defaults={'username': email, 'first_name': first_name, 'last_name': surname}
             )
 
             if created:
@@ -141,7 +141,7 @@ def create_teacher(request):
             # Create or update the UserProfile for the teacher
             teacher_profile, profile_created = UserProfile.objects.update_or_create(
                 user=teacher_user,
-                defaults={'firstname': firstname, 'surname': surname, 'email': email, 'user_type': 'teacher'}
+                defaults={'first_name': first_name, 'surname': surname, 'email': email, 'user_type': 'teacher'}
             )
 
             # Link the teacher to the same schools as the admin
@@ -171,7 +171,7 @@ def get_subjects(request):
 
 def create_student(request):
     if request.method == "POST":
-        firstname = request.POST['firstname']
+        first_name = request.POST['first_name']
         surname = request.POST['surname']
         email = request.POST['email']
         subject_id = request.POST['subject']
@@ -188,7 +188,7 @@ def create_student(request):
         
         subject = Subject.objects.get(id=subject_id)
         user_profile = UserProfile.objects.create(
-            user=user, firstname=firstname, surname=surname, email=email, user_type='student'
+            user=user, first_name=first_name, surname=surname, email=email, user_type='student'
         )
         user_profile.subjects.add(subject)
         
@@ -234,13 +234,13 @@ def bulk_import_students(request):
                 'subject_name': subject_name,
                 'year_groups': year_groups,  
                 'year_group': year_group,
-                'firstNames': request.POST.get('firstNames'),
+                'first_names': request.POST.get('first_names'),
                 'surnames': request.POST.get('surnames'),
                 'emails': request.POST.get('emails'),
             })
         year_group = request.POST.get('year_group')
         subject_name = request.POST.get('subject')
-        first_names_raw = request.POST.get('firstNames').splitlines()
+        first_names_raw = request.POST.get('first_names').splitlines()
         surnames_raw = request.POST.get('surnames').splitlines()
         emails_raw = request.POST.get('emails').splitlines()
         
@@ -267,7 +267,7 @@ def bulk_import_students(request):
                 'subject_name': subject_name,
                 'year_groups': year_groups,  
                 'year_group': year_group,
-                'firstNames': request.POST.get('firstNames'),
+                'first_names': request.POST.get('first_names'),
                 'surnames': request.POST.get('surnames'),
                 'emails': request.POST.get('emails'),
             })
@@ -282,7 +282,7 @@ def bulk_import_students(request):
                 'subject_name': subject_name,
                 'year_groups': year_groups,  
                 'year_group': year_group,
-                'firstNames': request.POST.get('firstNames'),
+                'first_names': request.POST.get('first_names'),
                 'surnames': request.POST.get('surnames'),
                 'emails': request.POST.get('emails'),
             })
@@ -358,7 +358,7 @@ def process_student_import(request):
             student_profile, profile_created = UserProfile.objects.update_or_create(
                 user=user,
                 defaults={
-                    'firstname': first_name,
+                    'first_name': first_name,
                     'surname': surname,
                     'email': email,
                     'user_type': 'student',

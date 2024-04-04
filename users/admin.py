@@ -2,9 +2,9 @@ from django.contrib import admin
 from .models import UserProfile
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'user_type', 'get_schools', 'get_subjects', 'firstname', 'surname', 'email', 'year_group')
+    list_display = ('user', 'user_type', 'get_schools', 'get_subjects', 'first_name', 'surname', 'email', 'year_group')
     list_filter = ('user_type', 'schools', 'subjects')
-    search_fields = ('user__username', 'firstname', 'surname', 'email')
+    search_fields = ('user__username', 'first_name', 'surname', 'email')
 
     # Adding filter_horizontal to manage ManyToManyField for schools
     filter_horizontal = ('schools', 'subjects')

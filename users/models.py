@@ -6,7 +6,7 @@ class UserProfile(models.Model):
     user_type = models.CharField(max_length=10, choices=[('school', 'School'), ('admin', 'Admin'), ('teacher', 'Teacher'), ('student', 'Student')])
     schools = models.ManyToManyField('textbook.School', blank=True) 
     subjects = models.ManyToManyField('textbook.Subject', blank=True)
-    firstname = models.CharField(max_length=50, null=True, blank=True)
+    first_name = models.CharField(max_length=50, null=True, blank=True)
     surname = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     year_group = models.IntegerField(null=True, blank=True)
