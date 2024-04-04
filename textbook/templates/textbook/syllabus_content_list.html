@@ -1,0 +1,21 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>Syllabus Content</h2>
+<a href="{% url 'textbook:syllabus_content_add' %}">Add Syllabus Content</a>
+<table class="list-view">
+    {% for content in contents %}
+    <tr>
+        <td>
+            Term {{ content.term }} Week {{ content.week_number }} 
+        </td>
+        <td>    
+            <a href="{% url 'textbook:syllabus_content_edit' week.id %}">Edit</a> 
+        </td> 
+        <td>            
+            <a href="{% url 'textbook:syllabus_content_delete' week.id %}">Delete</a>
+        </td>
+    </tr>    
+    {% endfor %}
+</table>
+{% endblock %}

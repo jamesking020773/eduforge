@@ -1,0 +1,21 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>Subjects</h2>
+<a href="{% url 'textbook:subject_add' %}">Add Subject</a>
+<table class="list-view">
+    {% for subject in subjects %}
+    <tr>
+        <td>
+            Year {{ subject.subject_year }} ({{ subject.subject_name }})
+        </td>
+        <td>
+            <a href="{% url 'textbook:subject_edit' subject.id %}">Edit</a>
+        </td> 
+        <td>
+            <a href="{% url 'textbook:subject_delete' subject.id %}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

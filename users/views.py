@@ -36,7 +36,7 @@ def teacher_classes(request):
     if request.user.is_authenticated:
         try:
             user_profile = UserProfile.objects.get(user=request.user)
-            schools_list = user_profile.schools.all()  # Directly pass the queryset of schools
+            schools_list = user_profile.schools.all()  
         except UserProfile.DoesNotExist:
             schools_list = None
     else:
@@ -45,12 +45,27 @@ def teacher_classes(request):
     return render(request, "users/teacher_classes.html", context)
 
 @login_required
+def school_user(request):
+    schools_list = None
+    if request.user.is_authenticated:
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+            schools_list = user_profile.schools.all()  
+            schools_list = None
+        except UserProfile.DoesNotExist:
+            schools_list = None
+    else:
+        return HttpResponseRedirect(reverse("login"))
+    context = {'schools_list': schools_list}
+    return render(request, "users/school_user.html", context)
+
+@login_required
 def teacher_subjects(request):
     schools_list = None
     if request.user.is_authenticated:
         try:
             user_profile = UserProfile.objects.get(user=request.user)
-            schools_list = user_profile.schools.all()  # Directly pass the queryset of schools
+            schools_list = user_profile.schools.all()  
         except UserProfile.DoesNotExist:
             schools_list = None
     else:
@@ -107,7 +122,7 @@ def create_admin(request):
             if school not in profile.schools.all():
                 profile.schools.add(school)
             messages.success(request, "Admin account successfully created.")
-            return redirect('users:index')
+            return redirect('users:school_user')
     else:
         form = AdminCreationForm()
     return render(request, 'users/create_admin.html', {'form': form})
@@ -118,7 +133,6 @@ def create_teacher(request):
     if admin_profile.user_type != 'admin':
         messages.error(request, "Action not Authorised")
         return redirect(settings.LOGIN_URL) 
-
     if request.method == 'POST':
         form = TeacherCreationForm(request.POST)
         if form.is_valid():
@@ -126,32 +140,25 @@ def create_teacher(request):
             surname = form.cleaned_data['surname']
             email = form.cleaned_data['email']
             subjects = form.cleaned_data['subjects']
-
             # Create or get the user with the provided email
             teacher_user, created = User.objects.get_or_create(
                 email=email,
                 defaults={'username': email, 'first_name': first_name, 'last_name': surname}
             )
-
             if created:
-                # Consider a more secure approach for initial passwords
                 teacher_user.set_password('P@ssword!23')
                 teacher_user.save()
-
             # Create or update the UserProfile for the teacher
             teacher_profile, profile_created = UserProfile.objects.update_or_create(
                 user=teacher_user,
                 defaults={'first_name': first_name, 'surname': surname, 'email': email, 'user_type': 'teacher'}
             )
-
             # Link the teacher to the same schools as the admin
             for school in admin_profile.schools.all():
                 teacher_profile.schools.add(school)
-
             # Add subjects to the teacher profile
             for subject in subjects:
                 teacher_profile.subjects.add(subject)
-
             messages.success(request, "Teacher account {} successfully.".format("created" if created else "updated"))
             return redirect('users:index')
     else:
@@ -174,29 +181,23 @@ def create_student(request):
         first_name = request.POST['first_name']
         surname = request.POST['surname']
         email = request.POST['email']
-        subject_id = request.POST['subject']
-        
+        subject_id = request.POST['subject']     
         # Check if a user with the provided email already exists
         if User.objects.filter(email=email).exists():
             messages.error(request, "An account with this email already exists.")
             return redirect(settings.LOGIN_URL) 
-
         # Create user and user profile
         user = User.objects.create_user(username=email, email=email)
         user.set_unusable_password()  # Set an unusable password
-        user.save()
-        
+        user.save()     
         subject = Subject.objects.get(id=subject_id)
         user_profile = UserProfile.objects.create(
             user=user, first_name=first_name, surname=surname, email=email, user_type='student'
         )
-        user_profile.subjects.add(subject)
-        
+        user_profile.subjects.add(subject)     
         # Automatically log the user in after account creation
-        login(request, user)
-        
+        login(request, user)      
         return redirect('users:user')  
-
     else:
         subjects = Subject.objects.all()
         return render(request, 'users/create_student.html', {'subjects': subjects})

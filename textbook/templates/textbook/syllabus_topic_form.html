@@ -1,10 +1,11 @@
 {% extends "users/layout.html" %}
 {% block body %}
-<h2>{% if object %}Edit Question{% else %}Add Question{% endif %}</h2>
+<h2>{% if object %}Edit Syllabus Topic{% else %}Add Syllabus Topic{% endif %}</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Save</button>
     <button type="button" onclick="window.history.back();">Back</button>
+    <a href="{% url 'textbook:subject_add' %}">Add Subject</a>
 </form>
 {% endblock %}

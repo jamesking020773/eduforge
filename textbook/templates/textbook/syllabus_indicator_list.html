@@ -1,0 +1,21 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>Syllabus Indicators</h2>
+<a href="{% url 'textbook:syllabus_indicator_add' %}">Add Syllabus Indicator</a>
+<table class="list-view">
+    {% for indicator in indicators %}
+    <tr>
+        <td>
+            {{ indicator.indicator_number }} {{ indicator.indicator_description }} 
+        </td>
+        <td>    
+            <a href="{% url 'textbook:syllabus_indicator_edit' indicator.id %}">Edit</a> 
+        </td> 
+        <td>            
+            <a href="{% url 'textbook:syllabus_indicator_delete' indicator.id %}">Delete</a>
+        </td>
+    </tr>    
+    {% endfor %}
+</table>
+{% endblock %}

@@ -4,6 +4,7 @@
 <h2>Are you sure you want to delete "{{ object }}"?</h2>
 <form method="post">
     {% csrf_token %}
-    <button type="submit"> Confirm </button>
+    <button type="submit">Confirm</button>
+    <button type="button" onclick="window.history.back();">Back</button>
 </form>
 {% endblock %}

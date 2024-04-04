@@ -1,0 +1,21 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>Syllabus Outcomes</h2>
+<a href="{% url 'textbook:syllabus_outcome_add' %}">Add Syllabus Outcome</a>
+<table class="list-view">
+    {% for outcome in outcomes %}
+    <tr>
+        <td>
+            {{ outcome.outcome_number }}. {{ outcome.outcome_description }} - {{ outcome.subject }}
+        </td>
+        <td>    
+            <a href="{% url 'textbook:syllabus_outcome_edit' outcome.id %}">Edit</a>
+        </td> 
+        <td>            
+            <a href="{% url 'textbook:syllabus_outcome_delete' outcome.id %}">Delete</a>
+        </td>
+    </tr>    
+    {% endfor %}
+</table>
+{% endblock %}

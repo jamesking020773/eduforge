@@ -3,8 +3,8 @@
 {% block body %}
     {% if request.user.userprofile.user_type == 'student' %}
         <h2>Subjects</h2> 
-        <a href="">Lessons</a>
-        <a href="">Textbooks</a>   
+        <a href="{% url 'textbook:index' %}">Lessons</a>
+        <a href="{% url 'textbook:index' %}">Textbooks</a>   
         <a href="{% url 'textbook:index' %}">Quizzes</a>
     {% endif %}
 {% endblock %}

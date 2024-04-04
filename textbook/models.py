@@ -122,16 +122,16 @@ class TextbookSlide(models.Model):
 
 class SyllabusTopic(models.Model):
     syllabus_topic = models.CharField(max_length=200, default='')
-    subject = models.OneToOneField(Subject, on_delete=models.CASCADE, related_name='syllabus')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='topics')
     def __str__(self):
         return self.syllabus_topic
     class Meta:
-        verbose_name_plural = "Syllabi" 
+        verbose_name_plural = "Syllabus Topics" 
 
 class SyllabusOutcome(models.Model):
     outcome_number = models.CharField(max_length=50, default='')
-    outcome_description = models.TextField(default='')
-    syllabus_topics = models.ManyToManyField(SyllabusTopic, related_name='outcomes')
+    outcome_description = models.CharField(max_length=200, default='')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='outcomes')
     def __str__(self):
         return f"Outcome {self.outcome_number} - {self.outcome_description}"
     class Meta:
@@ -152,6 +152,7 @@ class SyllabusIndicator(models.Model):
     indicator_skill = models.BooleanField(default=False)
     indicator_knowledge = models.BooleanField(default=True)
     syllabus_content = models.ForeignKey(SyllabusContent, on_delete=models.CASCADE, related_name='indicators')
+    syllabus_outcomes = models.ManyToManyField(SyllabusOutcome, related_name='outcomes')
     def __str__(self):
         return self.indicator_description
     class Meta:

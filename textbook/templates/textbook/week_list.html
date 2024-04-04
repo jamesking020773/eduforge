@@ -1,0 +1,21 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>School Weeks</h2>
+<a href="{% url 'textbook:week_add' %}">Add School Week</a>
+<table class="list-view">
+    {% for week in weeks %}
+    <tr>
+        <td>
+            Term {{ week.term }} Week {{ week.week_number }} commencing {{ week.week_start_date }}
+        </td>
+        <td>    
+            <a href="{% url 'textbook:week_edit' week.id %}">Edit</a> 
+        </td> 
+        <td>            
+            <a href="{% url 'textbook:week_delete' week.id %}">Delete</a>
+        </td>
+    </tr>    
+    {% endfor %}
+</table>
+{% endblock %}

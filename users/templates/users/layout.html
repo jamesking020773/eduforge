@@ -39,7 +39,9 @@
         <ul class="menu">
             <li><a href="{% url 'users:index' %}">Home</a></li>
             {% if user.is_superuser %}
-                <li><a href="{% url 'users:create_admin' %}">Admin</a></li>
+                <li><a href="{% url 'users:school_user' %}">Admin</a></li>
+            {% elif user.userprofile.user_type == 'school' %}
+                <li><a href="{% url 'users:school_user' %}">Admin</a></li>
             {% elif user.userprofile.user_type == 'admin' %}
                 <li><a href="{% url 'users:create_teacher' %}">Teachers</a></li>
                 <li><a href="{% url 'users:teacher_classes' %}">Classes</a></li>

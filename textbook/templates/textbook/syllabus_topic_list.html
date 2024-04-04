@@ -1,0 +1,21 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>Syllabus Topics</h2>
+<a href="{% url 'textbook:syllabus_topic_add' %}">Add Syllabus Topic</a>
+<table class="list-view">
+    {% for topic in topics %}
+    <tr>
+        <td>
+            {{ topic.subject }} - {{ topic.syllabus_topic }}
+        </td>
+        <td>    
+            <a href="{% url 'textbook:syllabus_topic_edit' topic.id %}">Edit</a>
+        </td> 
+        <td>            
+            <a href="{% url 'textbook:syllabus_topic_delete' topic.id %}">Delete</a>
+        </td>
+    </tr>    
+    {% endfor %}
+</table>
+{% endblock %}

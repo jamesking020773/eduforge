@@ -107,3 +107,7 @@ a:focus {
 .admin-menu li a:hover, .teacher-menu li a:hover, .student-menu li a:hover {
     background-color: #45a049;
 }
+
+.list-view {
+    border: 1px;
+}

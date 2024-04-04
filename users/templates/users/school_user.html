@@ -1,0 +1,52 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+    {% if request.user.userprofile.user_type == 'school' %}
+        <h2>Admin</h2>
+        <b>Year Management</b><br>
+        Terms
+        <ul>
+            <li><a href="{% url 'textbook:term_add' %}">Add School Term</a></li>
+            <li><a href="{% url 'textbook:term_list' %}">Edit School Terms</a></li>
+        </ul>
+        Weeks
+        <ul>
+            <li><a href="{% url 'textbook:week_add' %}">Add Term Week</a></li>
+            <li><a href="{% url 'textbook:week_list' %}">Edit Term Weeks</a></li>
+        </ul>
+        <b>Syllabus Management</b><br>
+        Topics
+        <ul>
+            <li><a href="{% url 'textbook:syllabus_topic_add' %}">Add Syllabus Topic</a></li>
+            <li><a href="{% url 'textbook:syllabus_topic_list' %}">Edit Syllabus Topics</a></li>
+        </ul>
+        Outcomes
+        <ul>
+            <li><a href="{% url 'textbook:syllabus_outcome_add' %}">Add Syllabus Outcomes</a></li>
+            <li><a href="{% url 'textbook:syllabus_outcome_list' %}">Edit Syllabus Outcomes</a></li>
+        </ul>
+        Content
+        <ul>
+            <li><a href="{% url 'textbook:syllabus_content_add' %}">Add Syllabus Content</a></li>
+            <li><a href="{% url 'textbook:syllabus_content_list' %}">Edit Syllabus Content</a></li>
+        </ul>
+        Indicators
+        <ul>
+            <li><a href="{% url 'textbook:syllabus_indicator_add' %}">Add Syllabus Indicators</a></li>
+            <li><a href="{% url 'textbook:syllabus_indicator_list' %}">Edit Syllabus Indicators</a></li>
+        </ul>
+        <b>Subject Management</b><br>
+        <ul>
+            <li><a href="{% url 'textbook:subject_add' %}">Add Subject</a></li>
+            <li><a href="{% url 'textbook:subject_list' %}">Edit Subjects</a></li>
+        </ul>
+        <b>School Management</b><br>
+        <ul>
+            <li><a href="{% url 'textbook:school_add' %}">Add School</a></li>
+            <li><a href="{% url 'textbook:school_list' %}">Edit School</a></li>
+            <li><a href="{% url 'users:create_admin' %}">Add School Admin Account</a></li>
+        </ul>
+    {% endif %}
+{% endblock %}
+{% block javascript %}
+{% endblock %}

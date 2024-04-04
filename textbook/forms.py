@@ -108,7 +108,7 @@ class SyllabusTopicForm(forms.ModelForm):
         model = SyllabusTopic
         fields = '__all__'
         labels = {
-            'syllabus_topic': 'Syllabus: ', 
+            'syllabus_topic': 'Topic: ', 
             'subject': 'Linked Subject: '
         }
 

@@ -1,0 +1,21 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>Schools</h2>
+<a href="{% url 'textbook:school_add' %}">Add School</a>
+<table class="list-view">
+    {% for school in schools %}
+    <tr>
+        <td>
+            {{ school.school_name }} ({{ school.school_suburb }})
+        </td>
+        <td>
+            <a href="{% url 'textbook:school_edit' school.id %}">Edit</a>
+        </td>
+        <td>
+            <a href="{% url 'textbook:school_delete' school.id %}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

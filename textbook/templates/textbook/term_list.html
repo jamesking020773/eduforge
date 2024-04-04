@@ -1,0 +1,21 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>School Terms</h2>
+<a href="{% url 'textbook:term_add' %}">Add School Term</a>
+<table class="list-view">
+    {% for term in terms %}
+    <tr>
+        <td>
+            {{ term.term_year }} Term {{ term.term_number }} commencing {{ term.term_start_date }}
+        </td>
+        <td>    
+            <a href="{% url 'textbook:term_edit' term.id %}">Edit</a> 
+        </td> 
+        <td>            
+            <a href="{% url 'textbook:term_delete' term.id %}">Delete</a>
+        </td>
+    </tr>    
+    {% endfor %}
+</table>
+{% endblock %}

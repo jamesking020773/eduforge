@@ -1,7 +1,7 @@
 {% extends "users/layout.html" %}
 {% load static %}
 {% block body %}
-    {% if request.user.userprofile.user_type == 'teacher' %}
+    {% if request.user.userprofile.user_type == 'teacher' %} 
         <h2>Lessons</h2>
             <ul>
                 <li><a href="">Create Lesson</a></li>
@@ -16,9 +16,9 @@
         </ul>
         <h2>Quizzes</h2>
         <ul>
-            <li>Create Quiz</li>
-            <li>Modify Quiz</li>
-            <li><a href="{% url 'textbook:index' %}">View Quiz</a></li>
+            <li><a href=""></a>Create Quiz</a></li>
+            <li><a href=""></a>Modify Quiz</a></li>
+            <li><a href="">View Quiz</a></li>
         </ul>
     {% endif %}
 {% endblock %}
