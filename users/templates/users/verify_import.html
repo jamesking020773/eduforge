@@ -1,0 +1,56 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>Verify Student Data</h2>
+<table id="verifyImportTable" border="1">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th>Year Group</th>
+            <th>Subject</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Rows will be added here by JavaScript -->
+    </tbody>
+</table>
+<button onclick="goBackWithFormData()">Go Back and Edit</button>
+<form method="post" action="{% url 'users:process_student_import' %}">
+    {% csrf_token %}
+    <input type="hidden" name="import_data" value='{{ combined_data_json|safe }}'>
+    <input type="hidden" name="year_group" value="{{ year_group }}">
+    <input type="hidden" name="subject_name" value="{{ subject_name }}">
+    <input type="hidden" name="school_id" value="{{ school.id }}">
+    <input type="submit" value="Confirm and Process Import">
+</form>
+{% endblock %}
+{% block javascript %}
+<script>
+    var combinedData = JSON.parse('{{ combined_data_json|escapejs }}');
+    window.onload = function() {
+        var tbody = document.querySelector('#verifyImportTable tbody');
+        combinedData.forEach(function(row) {
+            var tr = document.createElement('tr');
+            tr.innerHTML = '<td>' + row.first_name + '</td>' +
+                           '<td>' + row.surname + '</td>' +
+                           '<td>' + row.email + '</td>' +
+                           '<td>' + row.year_group + '</td>' +
+                           '<td>' + row.subject + '</td>';
+            tbody.appendChild(tr);
+        });
+    };
+
+    function goBackWithFormData() {
+        var formData = {
+            combinedData: JSON.parse('{{ combined_data_json|escapejs }}'),
+            yearGroup: '{{ year_group }}',
+            subjectName: '{{ subject_name }}'
+        };
+        console.log(formData);
+        localStorage.setItem('bulkImportFormData', JSON.stringify(formData));
+        window.location.href = '{% url "users:bulk_import_students" %}';
+    }
+</script>
+{% endblock %}

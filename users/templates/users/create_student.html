@@ -1,0 +1,30 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>Create Student Account</h2>
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="firstname">First Name:</label>
+        <input type="text" id="firstname" name="firstname" required>
+    </div>
+    <div>
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" name="surname" required>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+        <label for="subject">Subject:</label>
+        <select id="subject" name="subject" required>
+            <option value="">Select a subject</option>
+            {% for subject in subjects %}
+            <option value="{{ subject.id }}">{{ subject.subjectName }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit">Create Account</button>
+</form>
+{% endblock %}

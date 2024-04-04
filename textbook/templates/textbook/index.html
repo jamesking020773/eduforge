@@ -1,0 +1,18 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+    <div id="content" data-questions='{{ questions_json }}'></div>
+    <button id="revealBtn">Reveal Answer</button>
+
+    <!-- Add Question Link -->
+    <div style="margin-top: 20px;">
+        <a href="{% url 'textbook:question_add' %}">Add a new question</a>
+    </div>
+    <!-- Link to Question List for Editing or Deleting Questions -->
+    <div style="margin-top: 10px;">
+        <a href="{% url 'textbook:question_list' %}">Manage questions</a>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'textbook/quiz.js' %}"></script>
+{% endblock %}

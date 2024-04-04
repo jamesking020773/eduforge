@@ -1,0 +1,34 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>Modify Classes</h2>
+{% for school, subjects in schools %}
+    <h3>{{ school.name }}</h3>
+    {% for subject, students in subjects %}
+        <h4>{{ subject.subjectName }}</h4>
+        <table id="student_list">
+        {% for student in students %}
+            <tr>
+                <td>
+                    {{ student.firstname }}
+                </td>
+                <td>
+                    {{ student.surname }}
+                </td>
+                <td>
+                    ({{ student.email }})
+                </td>
+                <td>
+                    <form action="{% url 'users:delete_student_subject' student.id subject.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" style="border: none; background: none; padding: 0; margin: 0; color: blue; cursor: pointer;">
+                        Delete
+                    </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
+{% endfor %}
+{% endblock %}

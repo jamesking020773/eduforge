@@ -1,0 +1,9 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create Admin</button>
+</form>
+{% endblock %}

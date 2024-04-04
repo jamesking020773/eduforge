@@ -1,0 +1,86 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<h2>Bulk Import Students</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+        <label for="school">School:</label>
+        <select id="school" name="school" required>
+            <option value="">--- Select School ---</option>
+            {% for school in schools %}
+            <option value="{{ school.id }}">{{ school.schoolName }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="year_group">Year Group:</label>
+        <select id="year_group" name="year_group" required>
+            <option value="">--- Select Year Group ---</option>
+            {% for year in year_groups %}
+            <option value="{{ year }}" {% if year|stringformat:"s" == year_group %} selected {% endif %}>{{ year }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="subject">Subject:</label>
+        <select id="subject" name="subject" required>
+            <option value="">--- Select Subject ---</option>
+            {% for subject in subjects %}
+            <option value="{{ subject.subjectName }}" {% if subject.subjectName == subject_name %}selected{% endif %}>{{ subject.subjectName }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-row">
+        <input type="submit" value="Import Students">   
+    </div>
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Surname</th>
+            <th>Email Address</th>
+        </tr>
+        <tr>
+            <td><textarea id="firstNames" name="firstNames" rows="40" cols="20" placeholder="Paste first names here, one per line.">{{ firstNames }}</textarea></td>
+            <td><textarea id="surnames" name="surnames" rows="40" cols="30" placeholder="Paste surnames here, one per line.">{{ surnames }}</textarea></td>
+            <td><textarea id="emails" name="emails" rows="40" cols="60" placeholder="Paste email addresses here, one per line.">{{ emails }}</textarea></td>
+        </tr>
+    </table> 
+</form>
+<script>
+    window.onload = function() {
+    var hasServerRenderedData = document.getElementById('firstNames').value || document.getElementById('surnames').value || document.getElementById('emails').value;
+    if (!hasServerRenderedData) {
+        // No server-rendered data found, attempt to load from localStorage
+        var storedFormData = localStorage.getItem('bulkImportFormData');
+        if (storedFormData) {
+            var formData = JSON.parse(storedFormData);
+            if (formData.combinedData) {
+                var firstNamesText = formData.combinedData.map(row => row.first_name).join('\n');
+                var surnamesText = formData.combinedData.map(row => row.surname).join('\n');
+                var emailsText = formData.combinedData.map(row => row.email).join('\n');
+
+                document.getElementById('firstNames').value = firstNamesText;
+                document.getElementById('surnames').value = surnamesText;
+                document.getElementById('emails').value = emailsText;
+            }
+            if (formData.yearGroup) {
+                document.getElementById('year_group').value = formData.yearGroup;
+            }
+            // Use formData.subjectName to select the subject
+            if (formData.subjectName) {
+                var subjectSelect = document.getElementById('subject');
+                for (var i = 0; i < subjectSelect.options.length; i++) {
+                    if (subjectSelect.options[i].value == formData.subjectName) {
+                        subjectSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            // Clear the stored data to prevent unintended reuse
+            localStorage.removeItem('bulkImportFormData');
+        }
+    }
+};
+</script>
+{% endblock %}

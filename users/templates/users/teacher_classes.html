@@ -1,0 +1,13 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+    {% if request.user.userprofile.user_type == 'teacher' %}
+        <h2>Classes</h2>
+        <ul>
+            <li><a href="{% url 'users:bulk_import_students' %}">Create Class</a></li>
+            <li><a href="{% url 'users:modify_student' %}">Modify Class</a></li>
+        </ul>
+    {% endif %}
+{% endblock %}
+{% block javascript %}
+{% endblock %}

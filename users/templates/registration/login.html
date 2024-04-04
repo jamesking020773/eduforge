@@ -1,0 +1,15 @@
+{% extends "users/layout.html" %}
+{% block body %}
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+<!-- Login form -->
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table><tr><td><input type="text" name="username" placeholder="Username"></td><td>
+        <td><input type="password" name="password" placeholder="Password"></td>
+        <td><button type="submit">Log in</button></td>
+        <td><a href="{% url 'password_reset' %}">Forgot your password?</a></td>
+    </tr></table>
+</form>
+{% endblock %}
