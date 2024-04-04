@@ -59,20 +59,6 @@ def teacher_subjects(request):
     return render(request, "users/teacher_subjects.html", context)
 
 @login_required
-def incident(request):
-    schools_list = None
-    if request.user.is_authenticated:
-        try:
-            user_profile = UserProfile.objects.get(user=request.user)
-            schools_list = user_profile.schools.all()  # Directly pass the queryset of schools
-        except UserProfile.DoesNotExist:
-            schools_list = None
-    else:
-        return HttpResponseRedirect(reverse("login"))
-    context = {'schools_list': schools_list}
-    return render(request, "users/incident.html", context)
-
-@login_required
 def student_subjects(request):
     schools_list = None
     if request.user.is_authenticated:
@@ -178,9 +164,9 @@ def is_valid_email(email):
     return re.match(email_regex, email)
 
 def get_subjects(request):
-    learningArea = request.GET.get('learningArea')
+    learning_area = request.GET.get('learning_area')
     stage = request.GET.get('stage')
-    subjects = Subject.objects.filter(learningArea=learningArea, stage=stage).values_list('id', 'subjectName')
+    subjects = Subject.objects.filter(learning_area=learning_area, stage=stage).values_list('id', 'subject_name')
     return JsonResponse(list(subjects), safe=False)
 
 def create_student(request):

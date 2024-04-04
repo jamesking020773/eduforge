@@ -70,7 +70,7 @@ class Subject(models.Model):
     stage = models.CharField(max_length=1, choices=STAGE_CHOICES, default='6')
     year = models.CharField(max_length=2, choices=YEAR_CHOICES, default='12')
     def __str__(self):
-        return self.subjectName
+        return self.subject_name
 
 class Textbook(models.Model):
     textbook_title = models.CharField(max_length=200, default='')
