@@ -80,7 +80,7 @@ a {
     color: #007BFF; /* Bootstrap's default blue for links */
     text-decoration: none; /* Removes underline from links */
     transition: color 0.2s; /* Smooth transition for color change */
-    margin: 0 0 0 0;
+    margin: 0 0 0 20px;
 }
 
 a:hover,
@@ -130,10 +130,9 @@ a:focus {
     border: none;
     padding: 0;
     cursor: pointer;
-    margin: 0 20px 0 20px;
 }
 
 .delete-button img {
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
 }

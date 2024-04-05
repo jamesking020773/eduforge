@@ -4,42 +4,62 @@
     {% if request.user.userprofile.user_type == 'school' %}
         <h1>Admin</h1>
         <h2>Year Management</h2>
-        <table class="list-view">
-            <tr><td class="menu-label-cell">Terms</td><td class="menu-link-cell"><a href="{% url 'textbook:term_add' %}">Add</a></td><td class="menu-link-cell"><a href="{% url 'textbook:term_list' %}">Edit</a></td></tr>
-            <tr><td class="menu-label-cell">Weeks</td><td class="menu-link-cell"><a href="{% url 'textbook:week_add' %}">Add</a></td><td class="menu-link-cell"><a href="{% url 'textbook:week_list' %}">Edit</a></td>
-        </table>
+            <table class="list-view">
+                <tr>
+                    <td class="menu-label-cell">Terms</td>
+                    <td class="menu-link-cell"><a href="{% url 'textbook:term_add' %}">Add</a></td>
+                    <td class="menu-link-cell"><a href="{% url 'textbook:term_list' %}">Edit</a></td>
+                </tr>
+                <tr>
+                    <td class="menu-label-cell">Weeks</td>
+                    <td class="menu-link-cell"><a href="{% url 'textbook:week_add' %}">Add</a></td>
+                    <td class="menu-link-cell"><a href="{% url 'textbook:week_list' %}">Edit</a></td>
+                </tr>
+            </table>
         <h2>Syllabus Management</h2>
-        <h3>Topics</h3>
-        <ul>
-            <li><a href="{% url 'textbook:syllabus_topic_add' %}">Add Syllabus Topic</a></li>
-            <li><a href="{% url 'textbook:syllabus_topic_list' %}">Edit Syllabus Topics</a></li>
-        </ul>
-        <h3>Outcomes</h3>
-        <ul>
-            <li><a href="{% url 'textbook:syllabus_outcome_add' %}">Add Syllabus Outcomes</a></li>
-            <li><a href="{% url 'textbook:syllabus_outcome_list' %}">Edit Syllabus Outcomes</a></li>
-        </ul>
-        <h3>Content</h3>
-        <ul>
-            <li><a href="{% url 'textbook:syllabus_content_add' %}">Add Syllabus Content</a></li>
-            <li><a href="{% url 'textbook:syllabus_content_list' %}">Edit Syllabus Content</a></li>
-        </ul>
-        <h3>Indicators</h3>
-        <ul>
-            <li><a href="{% url 'textbook:syllabus_indicator_add' %}">Add Syllabus Indicators</a></li>
-            <li><a href="{% url 'textbook:syllabus_indicator_list' %}">Edit Syllabus Indicators</a></li>
-        </ul>
+            <table class="list-view">
+            <tr>
+                <td class="menu-label-cell">Topics</td>
+                <td class="menu-link-cell"><a href="{% url 'textbook:syllabus_topic_add' %}">Add</a></td>
+                <td class="menu-link-cell"><a href="{% url 'textbook:syllabus_topic_list' %}">Edit</a></td>
+            </tr>
+            <tr>
+                <td class="menu-label-cell">Outcomes</td>
+                <td class="menu-link-cell"><a href="{% url 'textbook:syllabus_outcome_add' %}">Add</a></td>
+                <td class="menu-link-cell"><a href="{% url 'textbook:syllabus_outcome_list' %}">Edit</a></td>
+            </tr>
+            <tr>
+                <td class="menu-label-cell">Content</td>
+                <td class="menu-link-cell"><a href="{% url 'textbook:syllabus_content_add' %}">Add</a></td>
+                <td class="menu-link-cell"><a href="{% url 'textbook:syllabus_content_list' %}">Edit</a></td>
+            </tr>
+            <tr>
+                <td class="menu-label-cell">Indicators</td>
+                <td class="menu-link-cell"><a href="{% url 'textbook:syllabus_indicator_add' %}">Add</a></td>
+                <td class="menu-link-cell"><a href="{% url 'textbook:syllabus_indicator_list' %}">Edit</a></td>
+            </tr>
+            </table>
         <h2>Subject Management</h2>
-        <ul>
-            <li><a href="{% url 'textbook:subject_add' %}">Add Subject</a></li>
-            <li><a href="{% url 'textbook:subject_list' %}">Edit Subjects</a></li>
-        </ul>
+            <table class="list-view">
+                <tr>
+                    <td class="menu-label-cell">Subjects</td>
+                    <td class="menu-link-cell"><a href="{% url 'textbook:subject_add' %}">Add</a></td>
+                    <td class="menu-link-cell"><a href="{% url 'textbook:subject_list' %}">Edit</a></td>
+                </tr>
+            </table>
         <h2>School Management</h2>
-        <ul>
-            <li><a href="{% url 'textbook:school_add' %}">Add School</a></li>
-            <li><a href="{% url 'textbook:school_list' %}">Edit School</a></li>
-            <li><a href="{% url 'users:create_admin' %}">Add School Admin Account</a></li>
-        </ul>
+            <table class="list-view">
+            <tr>
+                <td class="menu-label-cell">Schools</td>
+                <td class="menu-link-cell"><a href="{% url 'textbook:school_add' %}">Add</a></td>
+                <td class="menu-link-cell"><a href="{% url 'textbook:school_list' %}">Edit</a></td>
+            </tr>
+            <tr>
+                <td class="menu-label-cell">Admin Accounts</td>
+                <td class="menu-link-cell"><a href="{% url 'users:create_admin' %}">Add</a></td>
+                <td class="menu-link-cell"><a href="">Edit</a></td>
+            </tr>
+            </table>
     {% endif %}
 {% endblock %}
 {% block javascript %}

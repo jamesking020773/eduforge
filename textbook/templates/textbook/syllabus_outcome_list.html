@@ -9,17 +9,35 @@
         {% for outcome in outcomes %}
         <tr>
             <td>
-                {{ outcome.outcome_number }}. {{ outcome.outcome_description }}
+                <a href="#" class="delete-button" data-href="{% url 'textbook:syllabus_outcome_delete' outcome.id %}">
+                    <img src="{% static 'users/delete20.png' %}" alt="Delete"/>
+                </a>
             </td>
             <td>    
-                <a href="{% url 'textbook:syllabus_outcome_edit' outcome.id %}">Edit</a>
+                <a href="{% url 'textbook:syllabus_outcome_edit' outcome.id %}">{{ outcome.outcome_number }}. {{ outcome.outcome_description }}</a>
             </td> 
-            <td>            
-                <a href="{% url 'textbook:syllabus_outcome_delete' outcome.id %}">Delete</a>
-            </td>
         </tr>    
         {% endfor %}
     </table>
 {% endfor %}
-
+<script>
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const confirmed = confirm('Are you sure you want to delete this item?');
+            if (confirmed) {
+                fetch(this.getAttribute('data-href'), {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                }).then(response => {
+                    if (response.ok) {
+                        window.location.href = '{% url 'textbook:syllabus_outcome_list' %}';
+                    }
+                });
+            }
+        });
+    });
+</script>
 {% endblock %}

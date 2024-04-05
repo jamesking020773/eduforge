@@ -5,7 +5,7 @@
 <a href="{% url 'textbook:syllabus_topic_add' %}">Add Syllabus Topic</a>
 {% for subject, topics in topics_by_subject.items %}
     <h3>{{ subject }}</h3>
-    <table class="list-view">
+    <table>
         {% for topic in topics %}
         <tr>
             <td>

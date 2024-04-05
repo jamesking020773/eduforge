@@ -52,7 +52,6 @@ class QuestionUpdate(LoginRequiredMixin, UpdateView):
 
 class QuestionDelete(LoginRequiredMixin, DeleteView):
     model = ExamQuestion
-    template_name = 'textbook/confirm_delete.html'
     success_url = reverse_lazy('textbook:question_list')
 
 class QuestionList(LoginRequiredMixin, ListView):
@@ -74,7 +73,6 @@ class TermUpdate(LoginRequiredMixin, UpdateView):
 
 class TermDelete(LoginRequiredMixin, DeleteView):
     model = Term
-    template_name = 'textbook/confirm_delete.html'
     success_url = reverse_lazy('textbook:term_list')
 
 class TermList(LoginRequiredMixin, ListView):
@@ -96,7 +94,6 @@ class WeekUpdate(LoginRequiredMixin, UpdateView):
 
 class WeekDelete(LoginRequiredMixin, DeleteView):
     model = Week
-    template_name = 'textbook/confirm_delete.html'
     success_url = reverse_lazy('textbook:week_list')
 
 class WeekList(LoginRequiredMixin, ListView):
@@ -118,7 +115,6 @@ class SchoolUpdate(LoginRequiredMixin, UpdateView):
 
 class SchoolDelete(LoginRequiredMixin, DeleteView):
     model = School
-    template_name = 'textbook/confirm_delete.html'
     success_url = reverse_lazy('textbook:school_list')
 
 class SchoolList(LoginRequiredMixin, ListView):
@@ -140,7 +136,6 @@ class SubjectUpdate(LoginRequiredMixin, UpdateView):
 
 class SubjectDelete(LoginRequiredMixin, DeleteView):
     model = Subject
-    template_name = 'textbook/confirm_delete.html'
     success_url = reverse_lazy('textbook:subject_list')
 
 class SubjectList(LoginRequiredMixin, ListView):
@@ -198,7 +193,6 @@ class SyllabusOutcomeUpdate(LoginRequiredMixin, UpdateView):
 
 class SyllabusOutcomeDelete(LoginRequiredMixin, DeleteView):
     model = SyllabusOutcome
-    template_name = 'textbook/confirm_delete.html'
     success_url = reverse_lazy('textbook:syllabus_outcome_list')
 
 class SyllabusOutcomeList(LoginRequiredMixin, ListView):
@@ -235,7 +229,6 @@ class SyllabusContentUpdate(LoginRequiredMixin, UpdateView):
 
 class SyllabusContentDelete(LoginRequiredMixin, DeleteView):
     model = SyllabusContent
-    template_name = 'textbook/confirm_delete.html'
     success_url = reverse_lazy('textbook:syllabus_content_list')
 
 class SyllabusContentList(LoginRequiredMixin, ListView):
@@ -257,7 +250,6 @@ class SyllabusIndicatorUpdate(LoginRequiredMixin, UpdateView):
 
 class SyllabusIndicatorDelete(LoginRequiredMixin, DeleteView):
     model = SyllabusIndicator
-    template_name = 'textbook/confirm_delete.html'
     success_url = reverse_lazy('textbook:syllabus_indicator_list')
 
 class SyllabusIndicatorList(LoginRequiredMixin, ListView):
