@@ -15,6 +15,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
+from collections import defaultdict
 
 @login_required
 def index(request):
@@ -185,8 +186,19 @@ class SyllabusOutcomeDelete(LoginRequiredMixin, DeleteView):
 
 class SyllabusOutcomeList(LoginRequiredMixin, ListView):
     model = SyllabusOutcome
-    context_object_name = 'outcomes'
-    template_name = 'textbook/syllabus_outcome_list.html'
+    context_object_name = 'outcomes_by_subject'
+    template_name = 'textbook/syllabus_outcome_list.html'  
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Retrieve all outcomes and then group them by subject
+        outcomes = SyllabusOutcome.objects.all().select_related('subject')
+        outcomes_by_subject = defaultdict(list)
+        for outcome in outcomes:
+            outcomes_by_subject[outcome.subject].append(outcome)
+        # Update the context with the grouped outcomes
+        context['outcomes_by_subject'] = dict(outcomes_by_subject)
+        return context
 
 class SyllabusContentCreate(LoginRequiredMixin, CreateView):
     model = SyllabusContent
