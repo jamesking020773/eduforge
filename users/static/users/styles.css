@@ -1,8 +1,28 @@
 html, body {
     width: 100%;
-    margin: 0;
+    margin: 0px;
     padding: 0;
     font-family: Arial, sans-serif; 
+}
+
+h1, h2, h3, p, .question, .answer, .message, .list-view {
+    margin: 20px;
+}
+
+.menu-label-cell {
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.menu-link-cell {
+    width: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
 }
 
 .question, .answer, .message{ 
@@ -28,10 +48,6 @@ html, body {
 }
 .form-row select {
     flex-basis: 50%; /* Assigns 50% of the container's width to the select */
-}
-
-p {
-    margin: 20px; 
 }
 
 .header {
@@ -64,7 +80,7 @@ a {
     color: #007BFF; /* Bootstrap's default blue for links */
     text-decoration: none; /* Removes underline from links */
     transition: color 0.2s; /* Smooth transition for color change */
-    margin: 20px;
+    margin: 0 0 0 0;
 }
 
 a:hover,
@@ -108,6 +124,16 @@ a:focus {
     background-color: #45a049;
 }
 
-.list-view {
-    border: 1px;
+.delete-button {
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    margin: 0 20px 0 20px;
+}
+
+.delete-button img {
+    width: 20px;
+    height: 20px;
 }

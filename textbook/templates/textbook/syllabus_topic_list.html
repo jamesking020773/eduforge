@@ -3,19 +3,41 @@
 {% block body %}
 <h2>Syllabus Topics</h2>
 <a href="{% url 'textbook:syllabus_topic_add' %}">Add Syllabus Topic</a>
-<table class="list-view">
-    {% for topic in topics %}
-    <tr>
-        <td>
-            {{ topic.subject }} - {{ topic.syllabus_topic }}
-        </td>
-        <td>    
-            <a href="{% url 'textbook:syllabus_topic_edit' topic.id %}">Edit</a>
-        </td> 
-        <td>            
-            <a href="{% url 'textbook:syllabus_topic_delete' topic.id %}">Delete</a>
-        </td>
-    </tr>    
-    {% endfor %}
-</table>
+{% for subject, topics in topics_by_subject.items %}
+    <h3>{{ subject }}</h3>
+    <table class="list-view">
+        {% for topic in topics %}
+        <tr>
+            <td>
+                <a href="#" class="delete-button" data-href="{% url 'textbook:syllabus_topic_delete' topic.id %}">
+                    <img src="{% static 'users/delete20.png' %}" alt="Delete"/>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'textbook:syllabus_topic_edit' topic.id %}">{{ topic.syllabus_topic }}</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endfor %}
+<script>
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const confirmed = confirm('Are you sure you want to delete this item?');
+            if (confirmed) {
+                fetch(this.getAttribute('data-href'), {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                }).then(response => {
+                    if (response.ok) {
+                        window.location.href = '{% url 'textbook:syllabus_topic_list' %}';
+                    }
+                });
+            }
+        });
+    });
+</script>
 {% endblock %}

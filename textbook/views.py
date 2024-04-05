@@ -169,13 +169,20 @@ class SyllabusTopicUpdate(LoginRequiredMixin, UpdateView):
 
 class SyllabusTopicDelete(LoginRequiredMixin, DeleteView):
     model = SyllabusTopic
-    template_name = 'textbook/confirm_delete.html'
     success_url = reverse_lazy('textbook:syllabus_topic_list')
 
 class SyllabusTopicList(LoginRequiredMixin, ListView):
     model = SyllabusTopic
-    context_object_name = 'topics'
+    context_object_name = 'topics_by_subject'
     template_name = 'textbook/syllabus_topic_list.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        topics = SyllabusTopic.objects.all().select_related('subject')
+        topics_by_subject = defaultdict(list)
+        for topic in topics:
+            topics_by_subject[topic.subject].append(topic)
+        context['topics_by_subject'] = dict(topics_by_subject)
+        return context
 
 class SyllabusOutcomeCreate(LoginRequiredMixin, CreateView):
     model = SyllabusOutcome
