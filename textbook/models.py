@@ -120,14 +120,6 @@ class TextbookSlide(models.Model):
     def __str__(self):
         return self.slide_title
 
-class SyllabusTopic(models.Model):
-    syllabus_topic = models.CharField(max_length=200, default='')
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='topics')
-    def __str__(self):
-        return self.syllabus_topic
-    class Meta:
-        verbose_name_plural = "Syllabus Topics" 
-
 class SyllabusOutcome(models.Model):
     outcome_number = models.CharField(max_length=50, default='')
     outcome_description = models.CharField(max_length=200, default='')
@@ -136,6 +128,15 @@ class SyllabusOutcome(models.Model):
         return f"Outcome {self.outcome_number} - {self.outcome_description}"
     class Meta:
         verbose_name_plural = "Syllabus Outcomes"
+
+class SyllabusTopic(models.Model):
+    syllabus_topic = models.CharField(max_length=200, default='')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='topics')
+    outcomes = models.ManyToManyField(SyllabusOutcome, related_name='topics')
+    def __str__(self):
+        return self.syllabus_topic
+    class Meta:
+        verbose_name_plural = "Syllabus Topics" 
 
 class SyllabusContent(models.Model):
     content_number = models.IntegerField(blank=True)

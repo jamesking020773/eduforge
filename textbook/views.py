@@ -16,6 +16,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from collections import defaultdict
+from django.http import JsonResponse
+import json
+from django.utils.safestring import mark_safe
 
 @login_required
 def index(request):
@@ -156,6 +159,13 @@ class SyllabusTopicUpdate(LoginRequiredMixin, UpdateView):
     form_class = SyllabusTopicForm
     template_name = 'textbook/syllabus_topic_form.html'
     success_url = reverse_lazy('textbook:syllabus_topic_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.object:  # Check if there's an existing object being edited
+            # Serialize selected_outcomes to JSON and mark as safe for HTML
+            selected_outcomes = list(self.object.outcomes.values_list('id', flat=True))
+            context['selected_outcomes'] = mark_safe(json.dumps(selected_outcomes))
+        return context
 
 class SyllabusTopicDelete(LoginRequiredMixin, DeleteView):
     model = SyllabusTopic
@@ -199,6 +209,10 @@ class SyllabusOutcomeList(LoginRequiredMixin, ListView):
         # Update the context with the grouped outcomes
         context['outcomes_by_subject'] = dict(outcomes_by_subject)
         return context
+    
+def outcomes_for_subject(request, subject_id):
+    outcomes = SyllabusOutcome.objects.filter(subject_id=subject_id).values('id', 'outcome_number', 'outcome_description')
+    return JsonResponse(list(outcomes), safe=False)
 
 class SyllabusContentCreate(LoginRequiredMixin, CreateView):
     model = SyllabusContent
@@ -243,3 +257,4 @@ class SyllabusIndicatorList(LoginRequiredMixin, ListView):
     model = SyllabusIndicator
     context_object_name = 'indicators'
     template_name = 'textbook/syllabus_indicator_list.html'
+

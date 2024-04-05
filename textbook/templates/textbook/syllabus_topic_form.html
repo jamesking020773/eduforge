@@ -1,11 +1,77 @@
 {% extends "users/layout.html" %}
 {% block body %}
 <h2>{% if object %}Edit Syllabus Topic{% else %}Add Syllabus Topic{% endif %}</h2>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.media }}
+    {% for field in form %}
+        {% if field.name != 'outcomes' %}
+            <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <div style="color: red">{{ error }}</div>
+                {% endfor %}
+            </p>
+        {% endif %}
+    {% endfor %}
+    <div id="outcomesContainer" data-selected-outcomes="{{ selected_outcomes|default:"[]"|safe }}">
+        <!-- Outcomes checkboxes will be dynamically inserted here by JavaScript -->
+        <label for="outcomes">Linked Outcomes:</label><br>
+    </div>
+
     <button type="submit">Save</button>
     <button type="button" onclick="window.history.back();">Back</button>
     <a href="{% url 'textbook:subject_add' %}">Add Subject</a>
 </form>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const subjectSelect = document.querySelector("#id_subject");
+        const outcomesContainer = document.querySelector("#outcomesContainer");
+        const selectedOutcomes = JSON.parse(outcomesContainer.getAttribute('data-selected-outcomes'));
+    
+        function fetchAndPopulateOutcomes(subjectId) {
+            const url = `/textbook/outcomes_for_subject/${subjectId}/`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    outcomesContainer.innerHTML = '<label for="outcomes">Linked Outcomes:</label><br>';
+                    data.forEach(outcome => {
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.id = `outcome_${outcome.id}`;
+                        checkbox.name = 'outcomes';
+                        checkbox.value = outcome.id;
+    
+                        const label = document.createElement('label');
+                        label.htmlFor = `outcome_${outcome.id}`;
+                        label.appendChild(document.createTextNode(`${outcome.outcome_number}. ${outcome.outcome_description}`));
+    
+                        outcomesContainer.appendChild(checkbox);
+                        outcomesContainer.appendChild(label);
+                        outcomesContainer.appendChild(document.createElement('br'));
+    
+                        // Mark as checked if it's in selectedOutcomes
+                        if (selectedOutcomes.includes(outcome.id)) {
+                            checkbox.checked = true;
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading the outcomes:', error));
+        }
+    
+        // Listen for subject changes and update outcomes accordingly
+        subjectSelect.addEventListener("change", function() {
+            fetchAndPopulateOutcomes(this.value);
+        });
+    
+        // Populate outcomes on initial load if editing (i.e., subject has a value)
+        if (subjectSelect.value) {
+            fetchAndPopulateOutcomes(subjectSelect.value);
+        }
+    });
+    </script>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from .views import QuestionCreate, QuestionUpdate, QuestionDelete, QuestionList
+from .views import outcomes_for_subject
 from .views import TermCreate, TermUpdate, TermDelete, TermList
 from .views import WeekCreate, WeekUpdate, WeekDelete, WeekList
 from .views import SchoolCreate, SchoolUpdate, SchoolDelete, SchoolList
@@ -47,6 +48,8 @@ urlpatterns = [
     path('syllabus_outcome/<int:pk>/edit/', SyllabusOutcomeUpdate.as_view(), name='syllabus_outcome_edit'),
     path('syllabus_outcome/<int:pk>/delete/', SyllabusOutcomeDelete.as_view(), name='syllabus_outcome_delete'),
     path('syllabus_outcome/', SyllabusOutcomeList.as_view(), name='syllabus_outcome_list'),
+    path('outcomes_for_subject/<int:subject_id>/', views.outcomes_for_subject, name='outcomes_for_subject'),
+    
 
     path('syllabus_content/add/', SyllabusContentCreate.as_view(), name='syllabus_content_add'),
     path('syllabus_content/<int:pk>/edit/', SyllabusContentUpdate.as_view(), name='syllabus_content_edit'),

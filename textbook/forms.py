@@ -104,13 +104,34 @@ class TextbookSlideForm(forms.ModelForm):
         }
 
 class SyllabusTopicForm(forms.ModelForm):
+    outcomes = forms.ModelMultipleChoiceField(
+        queryset=SyllabusOutcome.objects.none(),  # Default to none, will be set in __init__
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
     class Meta:
         model = SyllabusTopic
         fields = '__all__'
         labels = {
-            'syllabus_topic': 'Topic: ', 
-            'subject': 'Linked Subject: '
+            'syllabus_topic': 'Topic: ',
+            'subject': 'Linked Subject: ',
+            'outcomes': 'Linked Outcomes: ',
         }
+    def __init__(self, *args, **kwargs):
+        super(SyllabusTopicForm, self).__init__(*args, **kwargs)
+        # Adjust the queryset based on the instance or initial subject
+        if self.instance and self.instance.pk and self.instance.subject:
+            self.fields['outcomes'].queryset = SyllabusOutcome.objects.filter(subject=self.instance.subject)
+        elif 'initial' in kwargs and 'subject' in kwargs['initial']:
+            self.fields['outcomes'].queryset = SyllabusOutcome.objects.filter(subject=kwargs['initial']['subject'])
+        elif self.data and 'subject' in self.data:
+            # This handles the case when the form is submitted
+            subject_id = self.data.get('subject')
+            self.fields['outcomes'].queryset = SyllabusOutcome.objects.filter(subject_id=subject_id)
+        else:
+            # This is a fallback in case no subject is set
+            self.fields['outcomes'].queryset = SyllabusOutcome.objects.none()
+
 
 class SyllabusOutcomeForm(forms.ModelForm):
     class Meta:
