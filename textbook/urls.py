@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from .views import QuestionCreate, QuestionUpdate, QuestionDelete, QuestionList
 from .views import outcomes_for_subject
+from .views import Test
 from .views import TermCreate, TermUpdate, TermDelete, TermList
 from .views import WeekCreate, WeekUpdate, WeekDelete, WeekList
 from .views import SchoolCreate, SchoolUpdate, SchoolDelete, SchoolList
@@ -13,6 +14,7 @@ from .views import SyllabusIndicatorCreate, SyllabusIndicatorUpdate, SyllabusInd
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('test/', Test.as_view(), name='test'),
 
     path('question/add/', QuestionCreate.as_view(), name='question_add'),
     path('question/<int:pk>/edit/', QuestionUpdate.as_view(), name='question_edit'),

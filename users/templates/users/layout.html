@@ -25,7 +25,7 @@
                     {% if schools_list %}
                         <div class="schools">
                             {% for school in schools_list %}
-                                <span>{{ school.schoolName }}</span>{% if not forloop.last %}, {% endif %}
+                                <span>{{ school.school_name }}</span>{% if not forloop.last %}, {% endif %}
                             {% endfor %}
                         </div>
                     {% endif %}

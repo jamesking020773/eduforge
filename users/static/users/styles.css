@@ -75,27 +75,13 @@ h1, h2, h3, p, .question, .answer, .message, .list-view {
     text-align: right;
 }
 
-a {
-    font-family: Arial, sans-serif;
-    color: #007BFF; /* Bootstrap's default blue for links */
-    text-decoration: none; /* Removes underline from links */
-    transition: color 0.2s; /* Smooth transition for color change */
-    margin: 0 0 0 20px;
-}
-
-a:hover,
-a:focus {
-    color: #0056b3; /* Darker blue on hover/focus for better visibility */
-    text-decoration: underline; /* Adds underline on hover/focus */
-}
-
 .menu {
     list-style-type: none;
     width: 100%;
     margin: 0;
     padding: 0;
     display: flex;
-    align-items: center; /* Center items vertically */
+    align-items: center; 
     background-color: #333;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -115,9 +101,8 @@ a:focus {
     background-color: #111;
 }
 
-/* Specific styles for different user roles */
 .admin-menu li a, .teacher-menu li a, .student-menu li a {
-    background-color: #4CAF50; /* Green background for simplicity, change as needed */
+    background-color: #4CAF50; 
 }
 
 .admin-menu li a:hover, .teacher-menu li a:hover, .student-menu li a:hover {
@@ -135,4 +120,51 @@ a:focus {
 .delete-button img {
     width: 12px;
     height: 12px;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row; /* Explicitly set the flex direction */
+    min-height: 100vh; /* Ensure the wrapper fills at least the viewport height */
+}
+.sidebar {
+    width: 20%;
+    background-color: #f0f0f0;
+    overflow-y: auto; /* Adds scroll to the sidebar if content overflows */
+}
+
+
+.subjects a.subject-link {
+    font-size: 14px;
+    margin: 5px 5px 5px 20px;
+    display: inline-block; /* Ensures margin applies all around, including top and bottom */
+}
+
+.learning-area a.learning-area-link {
+    font-size: 14px;
+    margin: 10px 0px 10px 10px;
+    display: inline-block; /* Ensures margin applies all around */
+}
+
+.content {
+    width: 80%;
+    overflow-y: auto; /* Adds scroll to the content area if content overflows */
+}
+
+.hidden {
+    display: none;
+}
+
+a {
+    font-family: Arial, sans-serif;
+    color: #007BFF; /* Bootstrap's default blue for links */
+    text-decoration: none; /* Removes underline from links */
+    transition: color 0.2s; /* Smooth transition for color change */
+    margin: 10px;
+}
+
+a:hover,
+a:focus {
+    color: #0056b3; /* Darker blue on hover/focus for better visibility */
+    text-decoration: underline; /* Adds underline on hover/focus */
 }

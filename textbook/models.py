@@ -131,7 +131,7 @@ class SyllabusOutcome(models.Model):
 
 class SyllabusTopic(models.Model):
     syllabus_topic = models.CharField(max_length=200, default='')
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='topics')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='syllabustopic_set')
     outcomes = models.ManyToManyField(SyllabusOutcome, related_name='topics')
     def __str__(self):
         return self.syllabus_topic
