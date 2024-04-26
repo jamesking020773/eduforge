@@ -73,6 +73,7 @@ class Subject(models.Model):
         return self.subject_name
 
 class Textbook(models.Model):
+    textbook_number = models.IntegerField(blank=True)
     textbook_title = models.CharField(max_length=200, default='')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='textbook')
     def __str__(self):
@@ -110,11 +111,7 @@ class TextbookSlide(models.Model):
     slide_global = models.BooleanField(default=True)
     slide_review= models.BooleanField(default=False)
     slide_title = models.CharField(max_length=200, default='')
-    slide_text = models.TextField(default='')
-    slide_image = models.CharField(max_length=200, default='')
-    slide_youtube = models.CharField(max_length=200, default='')
-    slide_links = models.CharField(max_length=500, default='')
-    slide_table = JSONField(default=dict)
+    slide_content = models.TextField()
     pages = models.ManyToManyField(TextbookPage, related_name='slides')
     slide_creator = models.ForeignKey('users.UserProfile', on_delete=models.SET_NULL, null=True, blank=True, related_name='created_slides')
     def __str__(self):
@@ -130,11 +127,12 @@ class SyllabusOutcome(models.Model):
         verbose_name_plural = "Syllabus Outcomes"
 
 class SyllabusTopic(models.Model):
-    syllabus_topic = models.CharField(max_length=200, default='')
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='syllabustopic_set')
+    syllabus_topic_number = models.IntegerField(blank=True)
+    syllabus_topic_name = models.CharField(max_length=200, default='')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='subject')
     outcomes = models.ManyToManyField(SyllabusOutcome, related_name='topics')
     def __str__(self):
-        return self.syllabus_topic
+        return self.syllabus_topic_name
     class Meta:
         verbose_name_plural = "Syllabus Topics" 
 
@@ -149,13 +147,12 @@ class SyllabusContent(models.Model):
 
 class SyllabusIndicator(models.Model):
     indicator_number = models.IntegerField(blank=True)
-    indicator_description = models.TextField(default='')
+    indicator_description = models.CharField(max_length=200, default='')
     indicator_skill = models.BooleanField(default=False)
     indicator_knowledge = models.BooleanField(default=True)
     syllabus_content = models.ForeignKey(SyllabusContent, on_delete=models.CASCADE, related_name='indicators')
-    syllabus_outcomes = models.ManyToManyField(SyllabusOutcome, related_name='outcomes')
     def __str__(self):
-        return self.indicator_description
+        return f"{self.indicator_number}. {self.syllabus_content}: {self.indicator_description}"
     class Meta:
         verbose_name_plural = "Syllabus Indicators"
     
@@ -166,7 +163,7 @@ class Sequence(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='sequences')
     sequence_creator = models.ForeignKey('users.UserProfile', on_delete=models.SET_NULL, null=True, blank=True, related_name='created_sequence')
     def __str__(self):
-        return f"{self.sequence_name} {self.sequence_year}"
+        return f" {self.sequence_year} {self.sequence_name} {self.subject}"
 
 class Term(models.Model):
     term_year = models.IntegerField(blank=False)
@@ -186,7 +183,6 @@ class Week(models.Model):
 class Lesson(models.Model):
     lesson_number = models.IntegerField(blank=True)
     lesson_global = models.BooleanField(default=True)
-    lesson_user = models.BooleanField(default=True)
     lesson_title = models.CharField(max_length=200)
     learning_intention = models.TextField(default='')
     success_criteria = models.TextField(default='')
@@ -206,6 +202,7 @@ class Lesson(models.Model):
     syllabus_outcomes = models.ManyToManyField(SyllabusOutcome)
     week = models.ForeignKey(Week, on_delete=models.CASCADE, related_name='lessons')
     pages = models.ManyToManyField(TextbookPage)
+    lesson_creator = models.ForeignKey('users.UserProfile', on_delete=models.SET_NULL, null=True, blank=True, related_name='created_lesson')
     def __str__(self):
         return self.lesson_title
     

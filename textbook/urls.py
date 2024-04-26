@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from .views import QuestionCreate, QuestionUpdate, QuestionDelete, QuestionList
 from .views import outcomes_for_subject
+from .views import get_topics_by_subject
 from .views import Test
 from .views import TermCreate, TermUpdate, TermDelete, TermList
 from .views import WeekCreate, WeekUpdate, WeekDelete, WeekList
@@ -45,6 +46,7 @@ urlpatterns = [
     path('syllabus_topic/<int:pk>/edit/', SyllabusTopicUpdate.as_view(), name='syllabus_topic_edit'),
     path('syllabus_topic/<int:pk>/delete/', SyllabusTopicDelete.as_view(), name='syllabus_topic_delete'),
     path('syllabus_topic/', SyllabusTopicList.as_view(), name='syllabus_topic_list'),
+    path('topics/<int:subject_id>/', views.get_topics_by_subject, name='get_topics_by_subject'),
 
     path('syllabus_outcome/add/', SyllabusOutcomeCreate.as_view(), name='syllabus_outcome_add'),
     path('syllabus_outcome/<int:pk>/edit/', SyllabusOutcomeUpdate.as_view(), name='syllabus_outcome_edit'),

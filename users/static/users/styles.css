@@ -128,28 +128,29 @@ h1, h2, h3, p, .question, .answer, .message, .list-view {
     min-height: 100vh; /* Ensure the wrapper fills at least the viewport height */
 }
 .sidebar {
-    width: 20%;
+    width: 25%;
     background-color: #f0f0f0;
     overflow-y: auto; /* Adds scroll to the sidebar if content overflows */
 }
 
+.content {
+    width: 75%;
+    overflow-y: auto; /* Adds scroll to the content area if content overflows */
+}
 
 .subjects a.subject-link {
     font-size: 14px;
-    margin: 5px 5px 5px 20px;
+    margin: 5px 5px 5px 45px;
     display: inline-block; /* Ensures margin applies all around, including top and bottom */
 }
 
 .learning-area a.learning-area-link {
     font-size: 14px;
-    margin: 10px 0px 10px 10px;
+    margin: 10px 0px 10px 35px;
     display: inline-block; /* Ensures margin applies all around */
 }
 
-.content {
-    width: 80%;
-    overflow-y: auto; /* Adds scroll to the content area if content overflows */
-}
+
 
 .hidden {
     display: none;
@@ -167,4 +168,13 @@ a:hover,
 a:focus {
     color: #0056b3; /* Darker blue on hover/focus for better visibility */
     text-decoration: underline; /* Adds underline on hover/focus */
+}
+
+.language-python {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    padding: 10px; /* Padding around the code */
+    border-radius: 10px; /* Rounded corners */
+    font-family: 'Courier New', monospace; /* Use a monospace font */
+    overflow-x: auto; /* Enable horizontal scroll for long lines */
 }

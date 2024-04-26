@@ -14,7 +14,7 @@ class SubjectAdmin(admin.ModelAdmin):
     ordering = ('subject_name', 'year',)  
 
 class SequenceAdmin(admin.ModelAdmin):
-    list_display = ('sequence_year', 'sequence_name')   
+    list_display = ('sequence_year', 'sequence_name', 'subject')   
     ordering = ('sequence_year', 'sequence_name') 
     
 class TermAdmin(admin.ModelAdmin):
@@ -30,13 +30,39 @@ class WeekAdmin(admin.ModelAdmin):
     get_term_number.admin_order_field = 'term'  
     get_term_number.short_description = 'Term Number'  
 
+class TextbookAdmin(admin.ModelAdmin):
+    list_display = ('textbook_number', 'textbook_title', 'subject', )
+    ordering = ('textbook_number',)
+
+class TextbookTopicAdmin(admin.ModelAdmin):
+    list_display = ('topic_number', 'topic_name', )
+    ordering = ('topic_number',)
+
+class TextbookSectionAdmin(admin.ModelAdmin):
+    list_display = ('section_number', 'topic', 'section_title')
+    ordering = ('section_number',)
+
 class TextbookPageAdmin(admin.ModelAdmin):
-    list_display = ('page_title', 'page_number')
+    list_display = ('page_number', 'page_title')
     filter_horizontal = ('sections',)
+    ordering = ('page_number',)
 
 class TextbookSlideAdmin(admin.ModelAdmin):
-    list_display = ('slide_title', 'slide_number')
+    list_display = ('slide_number', 'slide_title')
     filter_horizontal = ('pages',)
+    ordering = ('slide_number',)
+
+class SyllabusTopicAdmin(admin.ModelAdmin):
+    list_display = ('syllabus_topic_number', 'subject', 'syllabus_topic_name')
+    ordering = ('subject', 'syllabus_topic_number', 'syllabus_topic_name')
+
+class SyllabusContentAdmin(admin.ModelAdmin):
+    list_display = ('syllabus_topic', 'content_number', 'content_title')
+    ordering = ('content_number', 'syllabus_topic', 'content_title')
+
+class SyllabusIndicatorAdmin(admin.ModelAdmin):
+    list_display = ('indicator_number', 'syllabus_content', 'indicator_description')
+    ordering = ('indicator_number', 'syllabus_content')
 
 class LessonAdmin(admin.ModelAdmin):
     list_display = ('lesson_title', 'lesson_number')
@@ -72,13 +98,13 @@ admin.site.register(CodeQuestion, CodeQuestionAdmin)
 admin.site.register(ThinkingLevel)
 admin.site.register(TextbookPage, TextbookPageAdmin)
 admin.site.register(TextbookSlide, TextbookSlideAdmin)
-admin.site.register(Textbook)
-admin.site.register(TextbookTopic)
-admin.site.register(TextbookSection)
-admin.site.register(SyllabusTopic)
+admin.site.register(Textbook, TextbookAdmin)
+admin.site.register(TextbookTopic, TextbookTopicAdmin)
+admin.site.register(TextbookSection, TextbookSectionAdmin)
+admin.site.register(SyllabusTopic, SyllabusTopicAdmin)
 admin.site.register(SyllabusOutcome)
-admin.site.register(SyllabusContent)
-admin.site.register(SyllabusIndicator)
+admin.site.register(SyllabusContent, SyllabusContentAdmin)
+admin.site.register(SyllabusIndicator, SyllabusIndicatorAdmin)
 admin.site.register(Sequence, SequenceAdmin)
 admin.site.register(Term, TermAdmin)
 admin.site.register(Week, WeekAdmin)

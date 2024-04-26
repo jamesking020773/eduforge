@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from users.models import UserProfile
 from django.core import serializers
+from django.core.serializers import serialize
 from django.shortcuts import render
 from .models import ExamQuestion, RevisionQuestion, CodeQuestion
 from .models import Term, Week, School, Subject
@@ -9,6 +10,7 @@ from .models import SyllabusTopic, SyllabusOutcome, SyllabusContent, SyllabusInd
 from .forms import ExamQuestionForm, RevisionQuestionForm, CodeQuestionForm
 from .forms import TermForm, WeekForm, SchoolForm, SubjectForm
 from .forms import SyllabusTopicForm, SyllabusOutcomeForm, SyllabusContentForm, SyllabusIndicatorForm
+from .forms import TextbookSlideForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import OuterRef, Subquery, Count
 from django.urls import reverse_lazy
@@ -20,6 +22,8 @@ from django.http import JsonResponse
 import json
 from django.utils.safestring import mark_safe
 from django.db.models import Prefetch
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 
 @login_required
 def index(request):
@@ -39,6 +43,20 @@ def index(request):
             'questions_json': questions_json
         })
 
+def get_topics_by_subject(request, subject_id):
+    topics = SyllabusTopic.objects.filter(subject_id=subject_id).values('id', 'syllabus_topic_name')
+    return JsonResponse(list(topics), safe=False)
+
+def syllabus_topic_edit(request, pk=None):
+    if pk:
+        topic = SyllabusTopic.objects.get(pk=pk)
+        form = SyllabusTopicForm(instance=topic)
+    else:
+        form = SyllabusTopicForm()
+    if request.is_ajax():
+        html = render_to_string('textbook/syllabus_topic_form.html', {'form': form}, request=request)
+        return HttpResponse(html)
+
 class Test(LoginRequiredMixin, ListView):
     model = SyllabusTopic
     context_object_name = 'topics_by_subject'
@@ -55,7 +73,7 @@ class Test(LoginRequiredMixin, ListView):
         
         # Fetch all subjects and prefetch topics for each subject
         subjects = Subject.objects.all().prefetch_related(
-            Prefetch('syllabustopic_set', queryset=topics, to_attr='topics')
+            Prefetch('subject', queryset=topics, to_attr='topics')
         )
         
         # Organise subjects by learning area
@@ -66,7 +84,7 @@ class Test(LoginRequiredMixin, ListView):
         context['topics_by_subject'] = dict(topics_by_subject)
         context['learning_areas_with_subjects'] = {la: dict(subjects) for la, subjects in learning_areas_with_subjects.items()}
         
-        return context
+        return context 
 
 class QuestionCreate(LoginRequiredMixin, CreateView):
     model = ExamQuestion

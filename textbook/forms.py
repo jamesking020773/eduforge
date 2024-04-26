@@ -90,17 +90,12 @@ class TextbookSlideForm(forms.ModelForm):
             'slide_title': 'Slide Title: ',
             'slide_global': 'Global Defined: ', 
             'slide_review': 'Slide Reviewed: ', 
-            'slide_text': 'Slide Text: ',
-            'slide_image': 'Slide Image: ',
-            'slide_youtube': 'Slide Youtube: ',
-            'slide_links': 'Slide Web Links: ',
-            'slide_table': 'Slide Table: ',
+            'slide_content': 'Slide Content: ',
             'pages': 'Linked Pages: ',
             'slide_creator': 'Creator: '
         }
         widgets = {
             'pages': forms.CheckboxSelectMultiple,
-            'slide_table': forms.Textarea(attrs={'cols': 80, 'rows': 20})
         }
 
 class SyllabusTopicForm(forms.ModelForm):
@@ -113,7 +108,7 @@ class SyllabusTopicForm(forms.ModelForm):
         model = SyllabusTopic
         fields = '__all__'
         labels = {
-            'syllabus_topic': 'Topic: ',
+            'syllabus_topic_name': 'Topic: ',
             'subject': 'Linked Subject: ',
             'outcomes': 'Linked Outcomes: ',
         }

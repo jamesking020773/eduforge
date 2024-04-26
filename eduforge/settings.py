@@ -36,6 +36,7 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'  # Adjust if you have a specific page t
 INSTALLED_APPS = [
     'textbook',
     'users',
+    'ckeditor',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
