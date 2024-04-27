@@ -86,6 +86,64 @@ class Test(LoginRequiredMixin, ListView):
         
         return context 
 
+class LessonSchedule(LoginRequiredMixin, ListView):
+    model = SyllabusTopic
+    context_object_name = 'topics_by_subject'
+    template_name = 'textbook/lesson_schedule.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        topics = SyllabusTopic.objects.all().select_related('subject')
+        topics_by_subject = defaultdict(list)
+        learning_areas_with_subjects = defaultdict(lambda: defaultdict(list))
+        
+        for topic in topics:
+            topics_by_subject[topic.subject].append(topic)
+        
+        # Fetch all subjects and prefetch topics for each subject
+        subjects = Subject.objects.all().prefetch_related(
+            Prefetch('subject', queryset=topics, to_attr='topics')
+        )
+        
+        # Organise subjects by learning area
+        for subject in subjects:
+            learning_areas_with_subjects[subject.get_learning_area_display()][subject] = subject.topics
+        
+        # Convert defaultdict to regular dict for template compatibility
+        context['topics_by_subject'] = dict(topics_by_subject)
+        context['learning_areas_with_subjects'] = {la: dict(subjects) for la, subjects in learning_areas_with_subjects.items()}
+        
+        return context 
+
+class StudyMaterials(LoginRequiredMixin, ListView):
+    model = SyllabusTopic
+    context_object_name = 'topics_by_subject'
+    template_name = 'textbook/study_materials.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        topics = SyllabusTopic.objects.all().select_related('subject')
+        topics_by_subject = defaultdict(list)
+        learning_areas_with_subjects = defaultdict(lambda: defaultdict(list))
+        
+        for topic in topics:
+            topics_by_subject[topic.subject].append(topic)
+        
+        # Fetch all subjects and prefetch topics for each subject
+        subjects = Subject.objects.all().prefetch_related(
+            Prefetch('subject', queryset=topics, to_attr='topics')
+        )
+        
+        # Organise subjects by learning area
+        for subject in subjects:
+            learning_areas_with_subjects[subject.get_learning_area_display()][subject] = subject.topics
+        
+        # Convert defaultdict to regular dict for template compatibility
+        context['topics_by_subject'] = dict(topics_by_subject)
+        context['learning_areas_with_subjects'] = {la: dict(subjects) for la, subjects in learning_areas_with_subjects.items()}
+        
+        return context 
+
 class QuestionCreate(LoginRequiredMixin, CreateView):
     model = ExamQuestion
     form_class = ExamQuestionForm

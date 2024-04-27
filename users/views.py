@@ -28,7 +28,7 @@ def index(request):
     else:
         return HttpResponseRedirect(reverse("login"))
     context = {'schools_list': schools_list}
-    return render(request, "users/user.html", context)
+    return render(request, "textbook/lesson_schedule.html", context)
 
 @login_required
 def teacher_classes(request):

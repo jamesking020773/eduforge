@@ -3,7 +3,7 @@ from . import views
 from .views import QuestionCreate, QuestionUpdate, QuestionDelete, QuestionList
 from .views import outcomes_for_subject
 from .views import get_topics_by_subject
-from .views import Test
+from .views import Test, LessonSchedule, StudyMaterials
 from .views import TermCreate, TermUpdate, TermDelete, TermList
 from .views import WeekCreate, WeekUpdate, WeekDelete, WeekList
 from .views import SchoolCreate, SchoolUpdate, SchoolDelete, SchoolList
@@ -16,6 +16,8 @@ from .views import SyllabusIndicatorCreate, SyllabusIndicatorUpdate, SyllabusInd
 urlpatterns = [
     path('', views.index, name='index'),
     path('test/', Test.as_view(), name='test'),
+    path('lesson_schedule/', LessonSchedule.as_view(), name='lesson_schedule'),
+    path('study_materials/', StudyMaterials.as_view(), name='study_materials'),
 
     path('question/add/', QuestionCreate.as_view(), name='question_add'),
     path('question/<int:pk>/edit/', QuestionUpdate.as_view(), name='question_edit'),

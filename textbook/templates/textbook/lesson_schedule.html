@@ -1,0 +1,97 @@
+{% extends "users/layout.html" %}
+{% load static %}
+{% block body %}
+<div class="wrapper">
+    <div id="sidebar" class="sidebar"> 
+        <button id="toggleSidebar" style="border: none; background: none; padding: 0; margin: 5px;">
+            <img src="{% static 'users/toggle.png' %}" alt="Toggle Sidebar" style="width: 25px; height: 25px;">
+        </button>   
+        <!-- List of learning areas -->
+        {% for learning_area, subjects in learning_areas_with_subjects.items %}
+            <div class="learning-area">
+                <a href="#" class="learning-area-link">{{ learning_area }}</a>
+                <div class="subjects hidden">
+                    {% for subject in subjects %}
+                        <a href="#" class="subject-link" data-subject-id="{{ subject.id }}">{{ subject }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="content" class="content">
+        <!-- Content will be loaded here based on the selected subject -->
+    </div>
+</div>
+<script>
+    document.getElementById('toggleSidebar').addEventListener('click', function() {
+        var sidebar = document.getElementById('sidebar');
+        var content = document.getElementById('content');
+        sidebar.classList.toggle('collapsed');
+        if (sidebar.classList.contains('collapsed')) {
+            sidebar.style.width = '35px';
+            content.style.width = '100%';
+        } else {
+            sidebar.style.width = '25%';
+            content.style.width = '75%';
+        }
+    });
+
+    // Toggle display of subjects under a learning area
+    document.querySelectorAll('.learning-area > a').forEach(areaLink => {
+        areaLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Find the next sibling div which contains the subjects, and toggle its visibility
+            var subjectsDiv = this.nextElementSibling;
+            subjectsDiv.classList.toggle('hidden');
+        });
+    });
+
+// Modified event listener for subject links to use AJAX
+document.querySelectorAll('.subject-link').forEach(subjectLink => {
+    subjectLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        var subjectId = this.getAttribute('data-subject-id');
+        var contentArea = document.getElementById('content');
+        contentArea.innerHTML = 'Loading topics...';
+     
+        fetch(`/textbook/topics/${subjectId}/`)
+            .then(response => response.json())
+            .then(data => {
+                var htmlContent = `<h3>Syllabus Topics</h3>`;
+                data.forEach(topic => {
+                    htmlContent += `
+                        <div>
+                            <a class="edit-topic-link" href="/textbook/syllabus_topic/${topic.id}/edit/">${topic.syllabus_topic_name}</a>
+                        </div>`;
+                });
+                contentArea.innerHTML = htmlContent;
+            })
+            .catch(error => {
+                console.error('Error loading topics:', error);
+                contentArea.innerHTML = 'Failed to load topics.';
+            });
+    });
+});
+
+// New code to handle dynamic loading of the edit form
+document.addEventListener('click', function(e) {
+    if (e.target.matches('.edit-topic-link')) {
+        e.preventDefault();
+        var url = e.target.href; // Assuming this is the URL to your form view
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('content').innerHTML = html;
+            // Initialization code for the form can go here
+        })
+        .catch(error => console.error('Error loading the form:', error));
+    }
+});
+
+</script>
+{% endblock %}

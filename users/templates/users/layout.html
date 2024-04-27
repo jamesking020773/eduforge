@@ -34,27 +34,36 @@
             </div>
         {% endif %}
     </div>   
-    <!-- Dynamic Menu -->
-    {% if user.is_authenticated %}
-        <ul class="menu">
-            <li><a href="{% url 'users:index' %}">Home</a></li>
-            {% if user.is_superuser %}
-                <li><a href="{% url 'users:school_user' %}">Admin</a></li>
-            {% elif user.userprofile.user_type == 'school' %}
-                <li><a href="{% url 'users:school_user' %}">Admin</a></li>
-            {% elif user.userprofile.user_type == 'admin' %}
-                <li><a href="{% url 'users:create_teacher' %}">Teachers</a></li>
-                <li><a href="{% url 'users:teacher_classes' %}">Classes</a></li>
-                <li><a href="{% url 'users:teacher_subjects' %}">Subjects</a></li>
-            {% elif user.userprofile.user_type == 'teacher' %}
-                <li><a href="{% url 'users:teacher_classes' %}">Classes</a></li>
-                <li><a href="{% url 'users:teacher_subjects' %}">Subjects</a></li>
-            {% elif user.userprofile.user_type == 'student' %}
-                <li><a href="{% url 'users:student_subjects' %}">Subjects</a></li>
+<!-- Dynamic Menu -->
+{% if user.is_authenticated %}
+    <ul class="menu">
+        {% url 'users:school_user' as school_user_url %}
+        {% url 'users:create_teacher' as create_teacher_url %}
+        {% url 'users:teacher_classes' as teacher_classes_url %}
+        {% url 'users:teacher_subjects' as teacher_subjects_url %}
+        {% url 'textbook:lesson_schedule' as lesson_schedule_url %}
+        {% url 'textbook:study_materials' as study_materials_url %}
+        {% url 'users:logout' as logout_url %}   
+        {% if user.is_superuser %}
+            <li><a href="{{ school_user_url }}" class="{% if request.path == school_user_url %}active{% endif %}">Admin</a></li>
+        {% elif user.userprofile.user_type == 'school' %}
+            <li><a href="{{ school_user_url }}" class="{% if request.path == school_user_url %}active{% endif %}">Admin</a></li>
+        {% elif user.userprofile.user_type == 'admin' %}
+            <li><a href="{{ create_teacher_url }}" class="{% if request.path == create_teacher_url %}active{% endif %}">Teachers</a></li>
+            <li><a href="{{ teacher_classes_url }}" class="{% if request.path == teacher_classes_url %}active{% endif %}">Classes</a></li>
+            <li><a href="{{ teacher_subjects_url }}" class="{% if request.path == teacher_subjects_url %}active{% endif %}">Subjects</a></li>
+        {% elif user.userprofile.user_type == 'teacher' %}
+            <li><a href="{{ teacher_classes_url }}" class="{% if request.path == teacher_classes_url %}active{% endif %}">Classes</a></li>
+            <li><a href="{{ teacher_subjects_url }}" class="{% if request.path == teacher_subjects_url %}active{% endif %}">Subjects</a></li>
+        {% elif user.userprofile.user_type == 'student' %}
+            <li><a href="{{ lesson_schedule_url }}" class="{% if request.path == lesson_schedule_url %}active{% endif %}">Lesson Schedule</a></li>
+            <li><a href="{{ study_materials_url }}" class="{% if request.path == study_materials_url %}active{% endif %}">Study Materials</a></li>
+            <li><a href="#" class="">Revision Questions</a></li>
+            <li><a href="#" class="">Message Teacher</a></li>
             {% endif %}
-            <li><a href="{% url 'users:logout' %}">Logout</a></li>
-        </ul>
-    {% endif %}
+        <li><a href="{{ logout_url }}" class="{% if request.path == logout_url %}active{% endif %}">Logout</a></li>
+    </ul>
+{% endif %}
     {% if messages %}
         <ul class="messages">
         {% for message in messages %}
@@ -63,8 +72,6 @@
         </ul>
     {% endif %}
 {% block body %}
-{% endblock %}
-{% block javascript %}
 {% endblock %}
 </body>
 </html>

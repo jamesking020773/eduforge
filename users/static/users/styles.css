@@ -101,25 +101,20 @@ h1, h2, h3, p, .question, .answer, .message, .list-view {
     background-color: #111;
 }
 
+.menu li a.selected {
+    background-color: #111;
+}
+
+.menu li a.active {
+    background-color: #111;
+}
+
 .admin-menu li a, .teacher-menu li a, .student-menu li a {
     background-color: #4CAF50; 
 }
 
 .admin-menu li a:hover, .teacher-menu li a:hover, .student-menu li a:hover {
     background-color: #45a049;
-}
-
-.delete-button {
-    display: inline-block;
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-}
-
-.delete-button img {
-    width: 12px;
-    height: 12px;
 }
 
 .wrapper {
