@@ -19,15 +19,17 @@ from django.conf import settings
 @login_required
 def index(request):
     schools_list = None
-    if request.user.is_authenticated:
-        try:
-            user_profile = UserProfile.objects.get(user=request.user)
-            schools_list = user_profile.schools.all()  # Directly pass the queryset of schools
-        except UserProfile.DoesNotExist:
-            schools_list = None
-    else:
-        return HttpResponseRedirect(reverse("login"))
-    context = {'schools_list': schools_list}
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        schools_list = user_profile.schools.all()
+    except UserProfile.DoesNotExist:
+        schools_list = None
+
+    # Passing an additional context variable `reset_sidebar` set to True
+    context = {
+        'schools_list': schools_list,
+        'reset_sidebar': True  # This will tell the template to reset the sidebar state
+    }
     return render(request, "textbook/lesson_schedule.html", context)
 
 @login_required

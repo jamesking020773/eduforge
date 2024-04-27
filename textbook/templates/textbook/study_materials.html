@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 <div class="wrapper">
-    <div id="sidebar" class="sidebar"> 
+    <div id="sidebar" class="sidebar collapsed"> 
         <button id="toggleSidebar" style="border: none; background: none; padding: 0; margin: 5px;">
             <img src="{% static 'users/toggle.png' %}" alt="Toggle Sidebar" style="width: 25px; height: 25px;">
         </button>   
@@ -18,23 +18,11 @@
             </div>
         {% endfor %}
     </div>
-    <div id="content" class="content">
+    <div id="content" class="content"> 
         <!-- Content will be loaded here based on the selected subject -->
     </div>
 </div>
 <script>
-    document.getElementById('toggleSidebar').addEventListener('click', function() {
-        var sidebar = document.getElementById('sidebar');
-        var content = document.getElementById('content');
-        sidebar.classList.toggle('collapsed');
-        if (sidebar.classList.contains('collapsed')) {
-            sidebar.style.width = '35px';
-            content.style.width = '100%';
-        } else {
-            sidebar.style.width = '25%';
-            content.style.width = '75%';
-        }
-    });
 
     // Toggle display of subjects under a learning area
     document.querySelectorAll('.learning-area > a').forEach(areaLink => {
@@ -46,7 +34,7 @@
         });
     });
 
-// Event listener for subject links to use AJAX
+// Modified event listener for subject links to use AJAX
 document.querySelectorAll('.subject-link').forEach(subjectLink => {
     subjectLink.addEventListener('click', function(e) {
         e.preventDefault();
@@ -73,11 +61,11 @@ document.querySelectorAll('.subject-link').forEach(subjectLink => {
     });
 });
 
-// New code to handle dynamic loading of the edit form
+// Code to handle dynamic loading of the edit form
 document.addEventListener('click', function(e) {
     if (e.target.matches('.edit-topic-link')) {
         e.preventDefault();
-        var url = e.target.href; // Assuming this is the URL to your form view
+        var url = e.target.href; // URL to your form view
 
         fetch(url, {
             headers: {
@@ -92,6 +80,48 @@ document.addEventListener('click', function(e) {
         .catch(error => console.error('Error loading the form:', error));
     }
 });
+</script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var sidebar = document.getElementById('sidebar');
+        var content = document.getElementById('content');
+        var toggleButton = document.getElementById('toggleSidebar');
+        var menuLinks = document.querySelectorAll('.menu a');
+
+        // Function to expand the sidebar
+        function setSidebarState(expand) {
+            if (expand) {
+                console.log("Expanding sidebar");
+                sidebar.classList.add('expanded');
+                content.classList.add('expanded');
+                localStorage.setItem('sidebarExpanded', 'true');
+            } else {
+                console.log("Collapsing sidebar");
+                sidebar.classList.remove('expanded');
+                content.classList.remove('expanded');
+                localStorage.setItem('sidebarExpanded', 'false');
+            }
+        }
+
+        // Initialize sidebar state from local storage
+        if (localStorage.getItem('sidebarExpanded') === 'true') {
+            setSidebarState(true);
+        }
+
+        // Menu link click handling
+        menuLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                console.log("Menu link clicked");
+                setSidebarState(true);
+            });
+        });
+
+        // Toggle sidebar on button click
+        toggleButton.addEventListener('click', function() {
+            var shouldExpand = !sidebar.classList.contains('expanded');
+            setSidebarState(shouldExpand);
+        });
+    });
 </script>
 {% endblock %}

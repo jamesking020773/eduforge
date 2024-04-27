@@ -101,10 +101,6 @@ h1, h2, h3, p, .question, .answer, .message, .list-view {
     background-color: #111;
 }
 
-.menu li a.selected {
-    background-color: #111;
-}
-
 .menu li a.active {
     background-color: #111;
 }
@@ -123,14 +119,24 @@ h1, h2, h3, p, .question, .answer, .message, .list-view {
     min-height: 100vh; /* Ensure the wrapper fills at least the viewport height */
 }
 .sidebar {
-    width: 25%;
+    width: 35px; /* Initial collapsed width */
+    transition: width 0.3s ease; /* Smooth transition for the sidebar width */
     background-color: #f0f0f0;
     overflow-y: auto; /* Adds scroll to the sidebar if content overflows */
+}
+
+.sidebar.expanded {
+    width: 25%; /* Expanded width */
 }
 
 .content {
     width: 75%;
     overflow-y: auto; /* Adds scroll to the content area if content overflows */
+    transition: width 0.3s ease; /* Ensure the content area also transitions smoothly */
+}
+
+.content.expanded {
+    width: 75%; /* Adjusted content area width when sidebar is expanded */
 }
 
 .subjects a.subject-link {
@@ -144,8 +150,6 @@ h1, h2, h3, p, .question, .answer, .message, .list-view {
     margin: 10px 0px 10px 35px;
     display: inline-block; /* Ensures margin applies all around */
 }
-
-
 
 .hidden {
     display: none;
