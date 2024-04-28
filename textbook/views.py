@@ -5,12 +5,11 @@ from django.core import serializers
 from django.core.serializers import serialize
 from django.shortcuts import render
 from .models import ExamQuestion, RevisionQuestion, CodeQuestion
-from .models import Term, Week, School, Subject
+from .models import Term, Week, Lesson, School, Subject, Sequence, TextbookPage, TextbookSlide
 from .models import SyllabusTopic, SyllabusOutcome, SyllabusContent, SyllabusIndicator
 from .forms import ExamQuestionForm, RevisionQuestionForm, CodeQuestionForm
 from .forms import TermForm, WeekForm, SchoolForm, SubjectForm
 from .forms import SyllabusTopicForm, SyllabusOutcomeForm, SyllabusContentForm, SyllabusIndicatorForm
-from .forms import TextbookSlideForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import OuterRef, Subquery, Count
 from django.urls import reverse_lazy
@@ -47,6 +46,31 @@ def get_topics_by_subject(request, subject_id):
     topics = SyllabusTopic.objects.filter(subject_id=subject_id).values('id', 'syllabus_topic_name')
     return JsonResponse(list(topics), safe=False)
 
+def get_sequences_by_subject(request, subject_id):
+    sequences = Sequence.objects.filter(subject_id=subject_id).values('id', 'sequence_year')
+    return JsonResponse(list(sequences), safe=False)
+
+def get_terms_by_sequence(request, sequence_id):
+    terms = Term.objects.filter(sequences__id=sequence_id).values('id', 'term_number')
+    return JsonResponse(list(terms), safe=False)
+
+def get_weeks_by_term(request, term_id):
+    weeks = Week.objects.filter(term_id=term_id).values('id', 'week_number')
+    return JsonResponse(list(weeks), safe=False)
+
+def get_lessons_by_week(request, week_id):
+    lessons = Lesson.objects.filter(week_id=week_id).values('id', 'lesson_title')
+    return JsonResponse(list(lessons), safe=False)
+
+def get_pages_by_lesson(request, lesson_id):
+    lesson = Lesson.objects.get(id=lesson_id)
+    pages = lesson.pages.all().values('id', 'page_title', 'page_number').order_by('page_number')
+    return JsonResponse(list(pages), safe=False)
+
+def get_slides_by_page(request, page_id):
+    slides = TextbookSlide.objects.filter(pages=page_id).values('id', 'slide_title', 'slide_number', 'slide_content').order_by('slide_number')
+    return JsonResponse(list(slides), safe=False)
+
 def syllabus_topic_edit(request, pk=None):
     if pk:
         topic = SyllabusTopic.objects.get(pk=pk)
@@ -56,35 +80,6 @@ def syllabus_topic_edit(request, pk=None):
     if request.is_ajax():
         html = render_to_string('textbook/syllabus_topic_form.html', {'form': form}, request=request)
         return HttpResponse(html)
-
-class Test(LoginRequiredMixin, ListView):
-    model = SyllabusTopic
-    context_object_name = 'topics_by_subject'
-    template_name = 'textbook/test.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        topics = SyllabusTopic.objects.all().select_related('subject')
-        topics_by_subject = defaultdict(list)
-        learning_areas_with_subjects = defaultdict(lambda: defaultdict(list))
-        
-        for topic in topics:
-            topics_by_subject[topic.subject].append(topic)
-        
-        # Fetch all subjects and prefetch topics for each subject
-        subjects = Subject.objects.all().prefetch_related(
-            Prefetch('subject', queryset=topics, to_attr='topics')
-        )
-        
-        # Organise subjects by learning area
-        for subject in subjects:
-            learning_areas_with_subjects[subject.get_learning_area_display()][subject] = subject.topics
-        
-        # Convert defaultdict to regular dict for template compatibility
-        context['topics_by_subject'] = dict(topics_by_subject)
-        context['learning_areas_with_subjects'] = {la: dict(subjects) for la, subjects in learning_areas_with_subjects.items()}
-        
-        return context 
 
 class LessonSchedule(LoginRequiredMixin, ListView):
     model = SyllabusTopic

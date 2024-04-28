@@ -109,7 +109,7 @@ class TextbookPage(models.Model):
 class TextbookSlide(models.Model):
     slide_number = models.IntegerField(blank=True)
     slide_global = models.BooleanField(default=True)
-    slide_review= models.BooleanField(default=False)
+    slide_review = models.BooleanField(default=False)
     slide_title = models.CharField(max_length=200, default='')
     slide_content = models.TextField()
     pages = models.ManyToManyField(TextbookPage, related_name='slides')

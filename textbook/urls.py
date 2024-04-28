@@ -3,7 +3,8 @@ from . import views
 from .views import QuestionCreate, QuestionUpdate, QuestionDelete, QuestionList
 from .views import outcomes_for_subject
 from .views import get_topics_by_subject
-from .views import Test, LessonSchedule, StudyMaterials
+from .views import get_sequences_by_subject, get_terms_by_sequence, get_weeks_by_term, get_lessons_by_week, get_pages_by_lesson
+from .views import LessonSchedule, StudyMaterials
 from .views import TermCreate, TermUpdate, TermDelete, TermList
 from .views import WeekCreate, WeekUpdate, WeekDelete, WeekList
 from .views import SchoolCreate, SchoolUpdate, SchoolDelete, SchoolList
@@ -15,8 +16,15 @@ from .views import SyllabusIndicatorCreate, SyllabusIndicatorUpdate, SyllabusInd
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('test/', Test.as_view(), name='test'),
     path('lesson_schedule/', LessonSchedule.as_view(), name='lesson_schedule'),
+    path('api/sequences/<int:subject_id>/', views.get_sequences_by_subject, name='get_sequences_by_subject'),
+    path('api/terms/<int:sequence_id>/', views.get_terms_by_sequence, name='get_terms_by_sequence'),
+    path('api/weeks/<int:term_id>/', views.get_weeks_by_term, name='get_weeks_by_term'),
+    path('api/lessons/<int:week_id>/', views.get_lessons_by_week, name='get_lessons_by_week'),
+    
+    path('api/lessons/<int:lesson_id>/pages/', views.get_pages_by_lesson, name='lesson_pages'),
+    path('api/pages/<int:page_id>/slides/', views.get_slides_by_page, name='page_slides'),
+
     path('study_materials/', StudyMaterials.as_view(), name='study_materials'),
 
     path('question/add/', QuestionCreate.as_view(), name='question_add'),

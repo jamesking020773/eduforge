@@ -5,8 +5,28 @@ html, body {
     font-family: Arial, sans-serif; 
 }
 
-h1, h2, h3, p, .question, .answer, .message, .list-view {
+h1, h2, h3, h4, p, .question, .answer, .message, .list-view {
     margin: 20px;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 22px;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+h4 {
+    font-size: 18px;
+}
+
+p {
+    font-size: 16px;
 }
 
 .menu-label-cell {
@@ -129,20 +149,40 @@ h1, h2, h3, p, .question, .answer, .message, .list-view {
     width: 25%; /* Expanded width */
 }
 
-.content {
-    width: 75%;
-    overflow-y: auto; /* Adds scroll to the content area if content overflows */
-    transition: width 0.3s ease; /* Ensure the content area also transitions smoothly */
-}
-
 .content.expanded {
-    width: 75%; /* Adjusted content area width when sidebar is expanded */
+    width: 100%; /* Adjust width as needed when sidebar is expanded or other conditions change */
 }
 
 .subjects a.subject-link {
     font-size: 14px;
     margin: 5px 5px 5px 45px;
     display: inline-block; /* Ensures margin applies all around, including top and bottom */
+}
+
+.sequences a.sequence-link, .terms a.term-link, .weeks a.week-link, .lessons a.lesson-link, .pages a.page-link {
+    font-size: 14px;
+    display: inline-block;
+}
+
+.sequences a.sequence-link {
+    margin: 5px 5px 5px 55px;
+    
+}
+
+.terms a.term-link {
+    margin: 5px 5px 5px 65px;
+}
+
+.weeks a.week-link {
+    margin: 5px 5px 5px 75px;
+}
+
+.lessons a.lesson-link {
+    margin: 5px 5px 5px 85px;
+}
+
+.pages a.page-link {
+    margin: 5px 5px 5px 95px;
 }
 
 .learning-area a.learning-area-link {
@@ -176,4 +216,78 @@ a:focus {
     border-radius: 10px; /* Rounded corners */
     font-family: 'Courier New', monospace; /* Use a monospace font */
     overflow-x: auto; /* Enable horizontal scroll for long lines */
+    display: block; /* Ensures it behaves like a block-level element */
+    width: 95%; /* Take the full width of the parent container */
+    margin-left: 20px; /* Left margin to align with the <p> tag above */
+}
+
+.language-python code {
+    display: block; /* Makes each line take full width of its parent */
+    white-space: pre-wrap; /* Wraps text to next line, maintaining white spaces */
+}
+
+/* Specific Python Syntax Highlighting */
+.language-python .keyword { color: #569cd6; } /* Blue for Python keywords (def, import, etc.) */
+.language-python .string { color: #ce9178; } /* Light red for string literals */
+.language-python .comment { color: #6a9955; } /* Green for comments */
+.language-python .function { color: #dcdcdc; } /* White for function names */
+.language-python .class-name { color: #4ec9b0; } /* Teal for class names */
+
+.language-html {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    padding: 10px; /* Padding around the code */
+    border-radius: 10px; /* Rounded corners */
+    font-family: 'Courier New', monospace; /* Use a monospace font */
+    overflow-x: auto; /* Enable horizontal scroll for long lines */
+    display: block; /* Ensures it behaves like a block-level element */
+    width: 95%; /* Take the full width of the parent container */
+    margin-left: 20px; /* Left margin to align with the <p> tag above */
+}
+
+.language-html code {
+    display: block; /* Makes each line take full width of its parent */
+    white-space: pre-wrap; /* Wraps text to next line, maintaining white spaces */
+}
+
+/* Specific HTML Syntax Highlighting */
+.language-html .tag { color: #569cd6; } /* Blue for HTML tags */
+.language-html .attr-name { color: #9cdcfe; } /* Light blue for attribute names */
+.language-html .attr-value { color: #ce9178; } /* Light red for attribute values */
+.language-html .comment { color: #6a9955; } /* Green for comments */
+.language-html .doctype { color: #4ec9b0; } /* Teal for doctype */
+
+.slide-container {
+    max-height: calc(100vh - 70px); /* Full height minus header height */
+    overflow-y: auto; /* Allows scrolling */
+    padding: 20px; /* Padding around slides */
+}
+
+.slide {
+    background-color: #f9f9f9; /* Light grey background */
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding inside the slide */
+    margin-bottom: 20px; /* Space between slides */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+}
+
+#content {
+    position: relative; /* Establishes a positioning context for fixed positioning within */
+    width: 100%;
+    overflow-y: auto; /* Allows scrolling within the content area */
+    transition: width 0.3s ease; /* Smooth width transition */
+    padding: 0px; /* Space for the header */
+}
+
+#contentheader {
+    position: sticky; /* Sticky positioning relative to the nearest scrolling ancestor */
+    top: 0; /* Aligns the header at the top of the content area */
+    width: 100%; /* Ensures the header stretches across the content area */
+    background-color: #f9f9f9; /* Matching the slides' background color */
+    padding: 0px; /* Matching the slides' padding for consistency */
+    border: 1px solid #ccc; /* Matching the slides' border */
+    border-radius: 10px; /* Rounded corners like the slides */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Visual depth like the slides */
+    z-index: 1000; /* Keep on top of other content */
 }
