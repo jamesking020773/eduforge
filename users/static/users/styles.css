@@ -1,12 +1,12 @@
 html, body {
     width: 100%;
-    margin: 0px;
-    padding: 0;
     font-family: Arial, sans-serif; 
+    padding: 0;
+    margin: 0;
 }
 
 h1, h2, h3, h4, p, .question, .answer, .message, .list-view {
-    margin: 20px;
+    margin-bottom: 20px;
 }
 
 h1 {
@@ -74,20 +74,23 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    padding: 0;
     background-color: #ebebeb;
-    padding: 10px;
     text-align: center;
     border-radius: 8px;
 }
 
 .logo img {
-    height: 150px; /* Keep image aspect ratio */
+    height: 120px; /* Keep image aspect ratio */
     width: auto; /* You can set a max-width here if needed */
+    display: block;
 }
 .user-info {
     display: flex;
     align-items: right;
+    padding: 10px;
+    font-size: 14px;
+    color: #ffffff;
 }
 
 .right-aligned-table {
@@ -103,7 +106,7 @@ p {
     display: flex;
     align-items: center; 
     background-color: #333;
-    border-radius: 8px;
+    border-radius: 0 8px 8px 8px; 
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
@@ -138,11 +141,13 @@ p {
     flex-direction: row; /* Explicitly set the flex direction */
     min-height: 100vh; /* Ensure the wrapper fills at least the viewport height */
 }
+
 .sidebar {
     width: 35px; /* Initial collapsed width */
     transition: width 0.3s ease; /* Smooth transition for the sidebar width */
     background-color: #f0f0f0;
     overflow-y: auto; /* Adds scroll to the sidebar if content overflows */
+    flex-shrink: 0; /* Prevents the sidebar from shrinking */
 }
 
 .sidebar.expanded {
@@ -277,7 +282,6 @@ a:focus {
     width: 100%;
     overflow-y: auto; /* Allows scrolling within the content area */
     transition: width 0.3s ease; /* Smooth width transition */
-    padding: 0px; /* Space for the header */
 }
 
 #contentheader {
@@ -285,9 +289,10 @@ a:focus {
     top: 0; /* Aligns the header at the top of the content area */
     width: 100%; /* Ensures the header stretches across the content area */
     background-color: #f9f9f9; /* Matching the slides' background color */
-    padding: 0px; /* Matching the slides' padding for consistency */
+    padding-left: 20px; /* Matching the slides' padding for consistency */
     border: 1px solid #ccc; /* Matching the slides' border */
     border-radius: 10px; /* Rounded corners like the slides */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Visual depth like the slides */
     z-index: 1000; /* Keep on top of other content */
+    display: flex;
 }

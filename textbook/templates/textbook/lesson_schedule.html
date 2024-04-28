@@ -133,8 +133,10 @@
                         $('#content').append(`
                         <div id="content" class="content">
                             <div id="contentheader">
-                                <p style="text-align: right;">Page Number: ${page.page_number}</p>
-                                <h1>${page.page_title}</h1>
+                                <table style="width: 95%;"><tr>
+                                    <td><h1>${page.page_title}</h1></td>
+                                    <td style="text-align: right; vertical-align: middle; font-size: 14px;">Page Number: ${page.page_number}</td>
+                                </tr></table>   
                             </div>
                             <div class="slide-container" id="page-${page.id}"></div>
                         `);
@@ -152,8 +154,10 @@
                     slides.forEach(slide => {
                         $(`#page-${pageId}`).append(`
                             <div class="slide">
-                                <p style="text-align: right;">Slide Number: ${slide.slide_number}</p>
-                                <h2>${slide.slide_title}</h2>
+                                <table style="width: 100%;"><tr>
+                                    <td><h2>${slide.slide_title}</h2></td>
+                                    <td style="text-align: right; vertical-align: middle; font-size: 14px;">Slide Number: ${slide.slide_number}</td>
+                                </tr></table>
                                 <p>${slide.slide_content}</p>
                             </div>
                         `);

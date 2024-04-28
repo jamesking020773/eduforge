@@ -10,62 +10,69 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">
-            <img src="{% static 'users/logo.jpg' %}" alt="Logo">
-        </div>
-        <!-- Only show user info and logout button if user is authenticated -->
-        {% if user.is_authenticated %}
-            <div class="user-info">
-                <table class="right-aligned-table"><tr>
-                <td>
-                    <span>{{ user.username }}</span>
-                </td></tr>
-                <!-- Display schools list -->
-                <tr><td>
-                    {% if schools_list %}
-                        <div class="schools">
-                            {% for school in schools_list %}
-                                <span>{{ school.school_name }}</span>{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </td>
-                </tr></table>
-            </div>
-        {% endif %}
-    </div>   
-<!-- Dynamic Menu -->
-{% if user.is_authenticated %}
-    <ul class="menu">
-        {% url 'users:school_user' as school_user_url %}
-        {% url 'users:create_teacher' as create_teacher_url %}
-        {% url 'users:teacher_classes' as teacher_classes_url %}
-        {% url 'users:teacher_subjects' as teacher_subjects_url %}
-        {% url 'textbook:lesson_schedule' as lesson_schedule_url %}
-        {% url 'textbook:study_materials' as study_materials_url %}
-        {% url 'users:logout' as logout_url %}   
-        {% if user.is_superuser %}
-            <li><a href="{{ school_user_url }}" class="{% if request.path == school_user_url %}active{% endif %}">Admin</a></li>
-        {% elif user.userprofile.user_type == 'school' %}
-            <li><a href="{{ school_user_url }}" class="{% if request.path == school_user_url %}active{% endif %}">Admin</a></li>
-        {% elif user.userprofile.user_type == 'admin' %}
-            <li><a href="{{ create_teacher_url }}" class="{% if request.path == create_teacher_url %}active{% endif %}">Teachers</a></li>
-            <li><a href="{{ teacher_classes_url }}" class="{% if request.path == teacher_classes_url %}active{% endif %}">Classes</a></li>
-            <li><a href="{{ teacher_subjects_url }}" class="{% if request.path == teacher_subjects_url %}active{% endif %}">Subjects</a></li>
-        {% elif user.userprofile.user_type == 'teacher' %}
-            <li><a href="{{ teacher_classes_url }}" class="{% if request.path == teacher_classes_url %}active{% endif %}">Classes</a></li>
-            <li><a href="{{ teacher_subjects_url }}" class="{% if request.path == teacher_subjects_url %}active{% endif %}">Subjects</a></li>
-        {% elif user.userprofile.user_type == 'student' %}
-            <li><a href="{{ lesson_schedule_url }}" class="{% if request.path == lesson_schedule_url %}active{% endif %}">Lesson Schedule</a></li>
-            <li><a href="{{ study_materials_url }}" class="{% if request.path == study_materials_url %}active{% endif %}">Study Materials</a></li>
-            <li><a href="#" class="">Revision Questions</a></li>
-            <li><a href="#" class="">Assessment Tasks</a></li>
-            <li><a href="#" class="">Messages</a></li>
-            {% endif %}
-        <li><a href="{{ logout_url }}" class="{% if request.path == logout_url %}active{% endif %}">Logout</a></li>
-    </ul>
-{% endif %}
+    <div class="logo">
+        <img src="{% static 'users/logo.jpg' %}" alt="Logo">
+    </div>
+    <div class="menu">
+        <table style="width: 100%;"><tr>
+            <td>
+                {% if user.is_authenticated %}
+                    <ul class="menu">
+                        {% url 'users:school_user' as school_user_url %}
+                        {% url 'users:create_teacher' as create_teacher_url %}
+                        {% url 'users:teacher_classes' as teacher_classes_url %}
+                        {% url 'users:teacher_subjects' as teacher_subjects_url %}
+                        {% url 'textbook:lesson_schedule' as lesson_schedule_url %}
+                        {% url 'textbook:study_materials' as study_materials_url %}
+                        {% url 'users:logout' as logout_url %}   
+                        {% if user.is_superuser %}
+                            <li><a href="{{ school_user_url }}" class="{% if request.path == school_user_url %}active{% endif %}">Admin</a></li>
+                        {% elif user.userprofile.user_type == 'school' %}
+                            <li><a href="{{ school_user_url }}" class="{% if request.path == school_user_url %}active{% endif %}">Admin</a></li>
+                        {% elif user.userprofile.user_type == 'admin' %}
+                            <li><a href="{{ create_teacher_url }}" class="{% if request.path == create_teacher_url %}active{% endif %}">Teachers</a></li>
+                            <li><a href="{{ teacher_classes_url }}" class="{% if request.path == teacher_classes_url %}active{% endif %}">Classes</a></li>
+                            <li><a href="{{ teacher_subjects_url }}" class="{% if request.path == teacher_subjects_url %}active{% endif %}">Subjects</a></li>
+                        {% elif user.userprofile.user_type == 'teacher' %}
+                            <li><a href="{{ teacher_classes_url }}" class="{% if request.path == teacher_classes_url %}active{% endif %}">Classes</a></li>
+                            <li><a href="{{ teacher_subjects_url }}" class="{% if request.path == teacher_subjects_url %}active{% endif %}">Subjects</a></li>
+                        {% elif user.userprofile.user_type == 'student' %}
+                            <li><a href="{{ lesson_schedule_url }}" class="{% if request.path == lesson_schedule_url %}active{% endif %}">Lesson Schedule</a></li>
+                            <li><a href="{{ study_materials_url }}" class="{% if request.path == study_materials_url %}active{% endif %}">Study Materials</a></li>
+                            <li><a href="#" class="">Revision Questions</a></li>
+                            <li><a href="#" class="">Assessment Tasks</a></li>
+                            <li><a href="#" class="">Messages</a></li>
+                            {% endif %}
+                        <li><a href="{{ logout_url }}" class="{% if request.path == logout_url %}active{% endif %}">Logout</a></li>
+                    </ul>
+                {% endif %}
+            </td>
+            <td>
+                {% if user.is_authenticated %}
+                    <div class="user-info">
+                        <table class="right-aligned-table">
+                            <tr>
+                                <td>
+                                    <span>{{ user.username }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {% if schools_list %}
+                                        <div class="schools">
+                                            {% for school in schools_list %}
+                                                <span>{{ school.school_name }}</span>{% if not forloop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endif %}  
+            </td>
+        </tr></table>
+    </div>
     {% if messages %}
         <ul class="messages">
         {% for message in messages %}
