@@ -164,21 +164,24 @@ p {
     display: inline-block; /* Ensures margin applies all around, including top and bottom */
 }
 
-.sequences a.sequence-link, .terms a.term-link, .weeks a.week-link, .lessons a.lesson-link, .pages a.page-link {
+.sequences a.sequence-link, .terms a.term-link, .weeks a.week-link, .lessons a.lesson-link, .pages a.page-link,
+.textbooks a.textbook-link, .topics a.topic-link, .sections a.section-link {
     font-size: 14px;
     display: inline-block;
 }
 
-.sequences a.sequence-link {
+.sequences a.sequence-link,
+.textbooks a.textbook-link {
     margin: 5px 5px 5px 55px;
-    
 }
 
-.terms a.term-link {
+.terms a.term-link,
+.topics a.topic-link {
     margin: 5px 5px 5px 65px;
 }
 
-.weeks a.week-link {
+.weeks a.week-link,
+.sections a.section-link {
     margin: 5px 5px 5px 75px;
 }
 

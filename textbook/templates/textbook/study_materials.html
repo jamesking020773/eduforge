@@ -2,86 +2,125 @@
 {% load static %}
 {% block body %}
 <div class="wrapper">
-    <div id="sidebar" class="sidebar collapsed"> 
+    <div id="sidebar" class="sidebar collapsed">
         <button id="toggleSidebar" style="border: none; background: none; padding: 0; margin: 5px;">
             <img src="{% static 'users/toggle.png' %}" alt="Toggle Sidebar" style="width: 25px; height: 25px;">
-        </button>   
+        </button>
         <!-- List of learning areas -->
         {% for learning_area, subjects in learning_areas_with_subjects.items %}
             <div class="learning-area">
                 <a href="#" class="learning-area-link">{{ learning_area }}</a>
                 <div class="subjects hidden">
                     {% for subject in subjects %}
-                        <a href="#" class="subject-link" data-subject-id="{{ subject.id }}">{{ subject }}</a>
+                        <div>
+                            <a href="#" class="subject-link" data-subject-id="{{ subject.id }}">{{ subject }}</a>
+                            <div class="textbooks hidden"></div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
         {% endfor %}
     </div>
-    <div id="content" class="content"> 
+    <div id="content" class="content">
         <!-- Content will be loaded here based on the selected subject -->
     </div>
 </div>
 <script>
-
-    // Toggle display of subjects under a learning area
-    document.querySelectorAll('.learning-area > a').forEach(areaLink => {
-        areaLink.addEventListener('click', function(e) {
+    $(document).ready(function() {
+        // Toggle learning areas
+        $('.learning-area-link').click(function(e) {
             e.preventDefault();
-            // Find the next sibling div which contains the subjects, and toggle its visibility
-            var subjectsDiv = this.nextElementSibling;
-            subjectsDiv.classList.toggle('hidden');
+            $(this).next('.subjects').toggleClass('hidden');
         });
-    });
-
-// Modified event listener for subject links to use AJAX
-document.querySelectorAll('.subject-link').forEach(subjectLink => {
-    subjectLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        var subjectId = this.getAttribute('data-subject-id');
-        var contentArea = document.getElementById('content');
-        contentArea.innerHTML = 'Loading topics...';
-     
-        fetch(`/textbook/topics/${subjectId}/`)
-            .then(response => response.json())
-            .then(data => {
-                var htmlContent = `<h3>Syllabus Topics</h3>`;
-                data.forEach(topic => {
-                    htmlContent += `
-                        <div>
-                            <a class="edit-topic-link" href="/textbook/syllabus_topic/${topic.id}/edit/">${topic.syllabus_topic_name}</a>
-                        </div>`;
-                });
-                contentArea.innerHTML = htmlContent;
-            })
-            .catch(error => {
-                console.error('Error loading topics:', error);
-                contentArea.innerHTML = 'Failed to load topics.';
+        
+            // Fetch and display textbooks when a subject is clicked
+            $('.subject-link').click(function(e) {
+                e.preventDefault();
+                let subjectId = $(this).data('subject-id');
+                let textbooksDiv = $(this).next('.textbooks');
+                if (textbooksDiv.is(':empty')) {
+                    $.ajax({
+                        url: `/textbook/api/textbooks/${subjectId}`,
+                        method: 'GET',
+                        success: function(textbooks) {
+                            console.log("Fetching textbooks for subject:", subjectId);
+                            textbooks.forEach(textbook => {
+                                textbooksDiv.append(`<div><a href="#" class="textbook-link" data-textbook-id="${textbook.id}">${textbook.textbook_title}</a><div class="topics hidden"></div></div>`);
+                            });
+                            textbooksDiv.removeClass('hidden');
+                        }
+                    });
+                } else {
+                    textbooksDiv.toggleClass('hidden');
+                }
             });
-    });
-});
 
-// Code to handle dynamic loading of the edit form
-document.addEventListener('click', function(e) {
-    if (e.target.matches('.edit-topic-link')) {
-        e.preventDefault();
-        var url = e.target.href; // URL to your form view
+            // Fetch and display topics when a textbook is clicked
+            $(document).on('click', '.textbook-link', function(e) {
+                e.preventDefault();
+                let textbookId = $(this).data('textbook-id');
+                let topicsDiv = $(this).next('.topics');
+                if (topicsDiv.is(':empty')) {
+                    $.ajax({
+                        url: `/textbook/api/topics/${textbookId}`,
+                        method: 'GET',
+                        success: function(topics) {
+                            topics.forEach(topic => {
+                                topicsDiv.append(`<div><a href="#" class="topic-link" data-topic-id="${topic.id}">${topic.topic_name}</a><div class="sections hidden"></div></div>`);
+                            });
+                            topicsDiv.removeClass('hidden');
+                        }
+                    });
+                } else {
+                    topicsDiv.toggleClass('hidden');
+                }
+            });
 
-        fetch(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('content').innerHTML = html;
-            // Initialization code for the form can go here
-        })
-        .catch(error => console.error('Error loading the form:', error));
-    }
-});
+            // Fetch and display sections when a topic is clicked
+            $(document).on('click', '.topic-link', function(e) {
+                e.preventDefault();
+                let topicId = $(this).data('topic-id');
+                let sectionsDiv = $(this).next('.sections');
+                if (sectionsDiv.is(':empty')) {
+                    $.ajax({
+                        url: `/textbook/api/sections/${topicId}`,
+                        method: 'GET',
+                        success: function(sections) {
+                            sections.forEach(section => {
+                                sectionsDiv.append(`<div><a href="#" class="section-link" data-section-id="${section.id}">${section.section_title}</a><div class="pages hidden"></div></div>`);
+                            });
+                            sectionsDiv.removeClass('hidden');
+                        }
+                    });
+                } else {
+                    sectionsDiv.toggleClass('hidden');
+                }
+            });
+
+            // Fetch and display pages when a section is clicked
+            $(document).on('click', '.section-link', function(e) {
+                e.preventDefault();
+                let sectionId = $(this).data('section-id');
+                let pagesDiv = $(this).next('.pages');
+                if (pagesDiv.is(':empty')) {
+                    $.ajax({
+                        url: `/textbook/api/pages/${sectionId}`,
+                        method: 'GET',
+                        success: function(pages) {
+                            pages.forEach(page => {
+                                pagesDiv.append(`<div><a href="#" class="page-link" data-page-id="${page.id}">${page.page_title}</a></div>`);
+                            });
+                            pagesDiv.removeClass('hidden');
+                        }
+                    });
+                } else {
+                    pagesDiv.toggleClass('hidden');
+                }
+            });
+        });
+        
+ 
 </script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var sidebar = document.getElementById('sidebar');
@@ -92,12 +131,10 @@ document.addEventListener('click', function(e) {
         // Function to expand the sidebar
         function setSidebarState(expand) {
             if (expand) {
-                console.log("Expanding sidebar");
                 sidebar.classList.add('expanded');
                 content.classList.add('expanded');
                 localStorage.setItem('sidebarExpanded', 'true');
             } else {
-                console.log("Collapsing sidebar");
                 sidebar.classList.remove('expanded');
                 content.classList.remove('expanded');
                 localStorage.setItem('sidebarExpanded', 'false');
@@ -112,7 +149,6 @@ document.addEventListener('click', function(e) {
         // Menu link click handling
         menuLinks.forEach(function(link) {
             link.addEventListener('click', function(event) {
-                console.log("Menu link clicked");
                 setSidebarState(true);
             });
         });
@@ -124,4 +160,20 @@ document.addEventListener('click', function(e) {
         });
     });
 </script>
+{% if reset_sidebar %}
+<script>
+    // Reset the sidebar state in local storage
+    localStorage.setItem('sidebarExpanded', 'false');
+
+    // Optionally, immediately collapse the sidebar if it's currently expanded
+    document.addEventListener('DOMContentLoaded', function() {
+        var sidebar = document.getElementById('sidebar');
+        var content = document.getElementById('content');
+        if (sidebar.classList.contains('expanded')) {
+            sidebar.classList.remove('expanded');
+            content.classList.remove('expanded');
+        }
+    });
+</script>
+{% endif %}
 {% endblock %}

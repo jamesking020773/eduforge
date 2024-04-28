@@ -75,6 +75,7 @@
             }
         });
 
+        // Fetch and display weeks when a term is clicked
         $(document).on('click', '.term-link', function(e) {
             e.preventDefault();
             let termId = $(this).data('term-id');
@@ -97,7 +98,8 @@
                 weeksDiv.toggleClass('hidden');
             }
         });
-        
+       
+        // Fetch and display lessons when a week is clicked
         $(document).on('click', '.week-link', function(e) {
             e.preventDefault();
             let weekId = $(this).data('week-id');

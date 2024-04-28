@@ -4,6 +4,7 @@ from .views import QuestionCreate, QuestionUpdate, QuestionDelete, QuestionList
 from .views import outcomes_for_subject
 from .views import get_topics_by_subject
 from .views import get_sequences_by_subject, get_terms_by_sequence, get_weeks_by_term, get_lessons_by_week, get_pages_by_lesson
+from .views import get_textbooks_by_subject, get_topics_by_textbook, get_sections_by_topic, get_pages_by_section
 from .views import LessonSchedule, StudyMaterials
 from .views import TermCreate, TermUpdate, TermDelete, TermList
 from .views import WeekCreate, WeekUpdate, WeekDelete, WeekList
@@ -21,11 +22,14 @@ urlpatterns = [
     path('api/terms/<int:sequence_id>/', views.get_terms_by_sequence, name='get_terms_by_sequence'),
     path('api/weeks/<int:term_id>/', views.get_weeks_by_term, name='get_weeks_by_term'),
     path('api/lessons/<int:week_id>/', views.get_lessons_by_week, name='get_lessons_by_week'),
-    
     path('api/lessons/<int:lesson_id>/pages/', views.get_pages_by_lesson, name='lesson_pages'),
     path('api/pages/<int:page_id>/slides/', views.get_slides_by_page, name='page_slides'),
 
     path('study_materials/', StudyMaterials.as_view(), name='study_materials'),
+    path('api/textbooks/<int:subject_id>/', views.get_textbooks_by_subject, name='get_textbooks_by_subject'),
+    path('api/topics/<int:textbook_id>/', views.get_topics_by_textbook, name='get_topics_by_textbook'),
+    path('api/sections/<int:topic_id>/', views.get_sections_by_topic, name='get_sections_by_topic'),
+    path('api/pages/<int:section_id>/', views.get_pages_by_section, name='get_pages_by_section'),
 
     path('question/add/', QuestionCreate.as_view(), name='question_add'),
     path('question/<int:pk>/edit/', QuestionUpdate.as_view(), name='question_edit'),
