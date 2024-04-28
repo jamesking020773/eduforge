@@ -287,15 +287,15 @@ a:focus {
     transition: width 0.3s ease; /* Smooth width transition */
 }
 
-#contentheader {
-    position: sticky; /* Sticky positioning relative to the nearest scrolling ancestor */
-    top: 0; /* Aligns the header at the top of the content area */
-    width: 100%; /* Ensures the header stretches across the content area */
-    background-color: #f9f9f9; /* Matching the slides' background color */
-    padding-left: 20px; /* Matching the slides' padding for consistency */
-    border: 1px solid #ccc; /* Matching the slides' border */
-    border-radius: 10px; /* Rounded corners like the slides */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Visual depth like the slides */
-    z-index: 1000; /* Keep on top of other content */
+.content-header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: #f9f9f9;
+    padding-left: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
     display: flex;
 }

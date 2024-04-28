@@ -100,62 +100,50 @@ def syllabus_topic_edit(request, pk=None):
         return HttpResponse(html)
 
 class LessonSchedule(LoginRequiredMixin, ListView):
-    model = SyllabusTopic
-    context_object_name = 'topics_by_subject'
+    model = Subject
     template_name = 'textbook/lesson_schedule.html'
+    context_object_name = 'learning_areas_with_subjects'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        topics = SyllabusTopic.objects.all().select_related('subject')
-        topics_by_subject = defaultdict(list)
-        learning_areas_with_subjects = defaultdict(lambda: defaultdict(list))
-        
-        for topic in topics:
-            topics_by_subject[topic.subject].append(topic)
-        
-        # Fetch all subjects and prefetch topics for each subject
-        subjects = Subject.objects.all().prefetch_related(
-            Prefetch('subject', queryset=topics, to_attr='topics')
-        )
+        subjects = Subject.objects.all()
+        learning_areas_with_subjects = defaultdict(list)
         
         # Organise subjects by learning area
         for subject in subjects:
-            learning_areas_with_subjects[subject.get_learning_area_display()][subject] = subject.topics
+            learning_area_display = dict(Subject.LA_CHOICES).get(subject.learning_area, "Unknown Learning Area")
+            learning_areas_with_subjects[learning_area_display].append({
+                'id': subject.id,
+                'name': subject.subject_name
+            })
         
         # Convert defaultdict to regular dict for template compatibility
-        context['topics_by_subject'] = dict(topics_by_subject)
-        context['learning_areas_with_subjects'] = {la: dict(subjects) for la, subjects in learning_areas_with_subjects.items()}
+        context['learning_areas_with_subjects'] = dict(learning_areas_with_subjects)
         
-        return context 
+        return context
   
 class StudyMaterials(LoginRequiredMixin, ListView):
-    model = SyllabusTopic
+    model = Subject
     template_name = 'textbook/study_materials.html'
-    context_object_name = 'topics_by_subject'
+    context_object_name = 'learning_areas_with_subjects'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        topics = SyllabusTopic.objects.all().select_related('subject')
-        topics_by_subject = defaultdict(list)
-        learning_areas_with_subjects = defaultdict(lambda: defaultdict(list))
-        
-        for topic in topics:
-            topics_by_subject[topic.subject].append(topic)
-        
-        # Fetch all subjects and prefetch topics for each subject
-        subjects = Subject.objects.all().prefetch_related(
-            Prefetch('subject', queryset=topics, to_attr='topics')
-        )
+        subjects = Subject.objects.all()
+        learning_areas_with_subjects = defaultdict(list)
         
         # Organise subjects by learning area
         for subject in subjects:
-            learning_areas_with_subjects[subject.get_learning_area_display()][subject] = subject.topics
+            learning_area_display = dict(Subject.LA_CHOICES).get(subject.learning_area, "Unknown Learning Area")
+            learning_areas_with_subjects[learning_area_display].append({
+                'id': subject.id,
+                'name': subject.subject_name
+            })
         
         # Convert defaultdict to regular dict for template compatibility
-        context['topics_by_subject'] = dict(topics_by_subject)
-        context['learning_areas_with_subjects'] = {la: dict(subjects) for la, subjects in learning_areas_with_subjects.items()}
+        context['learning_areas_with_subjects'] = dict(learning_areas_with_subjects)
         
-        return context 
+        return context
 
 class QuestionCreate(LoginRequiredMixin, CreateView):
     model = ExamQuestion

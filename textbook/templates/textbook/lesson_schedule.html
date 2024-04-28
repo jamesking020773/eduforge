@@ -13,7 +13,8 @@
                 <div class="subjects hidden">
                     {% for subject in subjects %}
                         <div>
-                            <a href="#" class="subject-link" data-subject-id="{{ subject.id }}">{{ subject }}</a>
+                            <!-- Display subject name and include subject ID as a data attribute -->
+                            <a href="#" class="subject-link" data-subject-id="{{ subject.id }}">{{ subject.name }}</a>
                             <div class="sequences hidden"></div>
                         </div>
                     {% endfor %}
@@ -134,7 +135,7 @@
                     pages.forEach(page => {
                         $('#content').append(`
                         <div id="content" class="content">
-                            <div id="contentheader">
+                            <div id="contentheader" class="content-header">
                                 <table style="width: 95%;"><tr>
                                     <td><h1>${page.page_title}</h1></td>
                                     <td style="text-align: right; vertical-align: middle; font-size: 14px;">Page Number: ${page.page_number}</td>

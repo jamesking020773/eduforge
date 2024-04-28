@@ -13,7 +13,8 @@
                 <div class="subjects hidden">
                     {% for subject in subjects %}
                         <div>
-                            <a href="#" class="subject-link" data-subject-id="{{ subject.id }}">{{ subject }}</a>
+                            <!-- Display subject name and include subject ID as a data attribute -->
+                            <a href="#" class="subject-link" data-subject-id="{{ subject.id }}">{{ subject.name }}</a>
                             <div class="textbooks hidden"></div>
                         </div>
                     {% endfor %}
@@ -32,7 +33,7 @@
             e.preventDefault();
             $(this).next('.subjects').toggleClass('hidden');
         });
-        
+
             // Fetch and display textbooks when a subject is clicked
             $('.subject-link').click(function(e) {
                 e.preventDefault();
@@ -118,7 +119,62 @@
                 }
             });
         });
-        
+
+        $(document).on('click', '.section-link', function(e) {
+            e.preventDefault();
+            let sectionId = $(this).data('section-id');
+            let pagesDiv = $('#content');  // Correctly targeting the main content area
+            $.ajax({
+                url: `/textbook/api/pages/${sectionId}`,
+                method: 'GET',
+                success: function(pages) {
+                    pagesDiv.empty(); // Clear existing content in the main content area
+                    pages.forEach(page => {
+                        // Ensure that each page has a unique content ID if needed
+                        pagesDiv.append(`
+                            <div class="content" id="content-page-${page.id}">
+                                <div class="content-header">  <!-- Changed to class for multiple usages -->
+                                    <table style="width: 95%;">
+                                        <tr>
+                                            <td><h1>${page.page_title}</h1></td>
+                                            <td style="text-align: right; vertical-align: middle; font-size: 14px;">Page Number: ${page.page_number}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="slide-container" id="page-${page.id}"></div>
+                            </div>
+                        `);
+                        // Load slides for each page
+                        loadSlides(page.id);
+                    });
+                }
+            });
+        });
+
+        // Function to load and display slides for a given page
+        function loadSlides(pageId) {
+            $.ajax({
+                url: `/textbook/api/pages/${pageId}/slides/`,
+                method: 'GET',
+                success: function(slides) {
+                    let slideContainer = $(`#page-${pageId}`);
+                    slides.forEach(slide => {
+                        slideContainer.append(`
+                            <div class="slide">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td><h2>${slide.slide_title}</h2></td>
+                                        <td style="text-align: right; vertical-align: middle; font-size: 14px;">Slide Number: ${slide.slide_number}</td>
+                                    </tr>
+                                </table>
+                                <p>${slide.slide_content}</p>
+                            </div>
+                        `);
+                    });
+                }
+            });
+        }
+
  
 </script>
 <script>
