@@ -5,12 +5,13 @@ html, body {
     margin: 0;
 }
 
-h1, h2, h3, h4, p, .question, .answer, .message, .list-view {
-    margin-bottom: 20px;
+h2, h3, h4, p, .question, .answer, .message, .list-view {
+    margin-bottom: 0px;
 }
 
 h1 {
     font-size: 24px;
+    margin-bottom: 20px;
 }
 
 h2 {
@@ -23,10 +24,15 @@ h3 {
 
 h4 {
     font-size: 18px;
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 p {
     font-size: 16px;
+    padding: 5px;
+    margin: 0;
 }
 
 .menu-label-cell {
@@ -224,13 +230,12 @@ a:focus {
     border-radius: 10px; /* Rounded corners */
     font-family: 'Courier New', monospace; /* Use a monospace font */
     overflow-x: auto; /* Enable horizontal scroll for long lines */
-    display: block; /* Ensures it behaves like a block-level element */
-    width: 95%; /* Take the full width of the parent container */
+    display: inline-block; /* Ensures it behaves like a block-level element */
     margin-left: 20px; /* Left margin to align with the <p> tag above */
 }
 
 .language-python code {
-    display: block; /* Makes each line take full width of its parent */
+    display: inline-block; /* Makes each line take full width of its parent */
     white-space: pre-wrap; /* Wraps text to next line, maintaining white spaces */
 }
 
@@ -248,13 +253,12 @@ a:focus {
     border-radius: 10px; /* Rounded corners */
     font-family: 'Courier New', monospace; /* Use a monospace font */
     overflow-x: auto; /* Enable horizontal scroll for long lines */
-    display: block; /* Ensures it behaves like a block-level element */
-    width: 95%; /* Take the full width of the parent container */
+    display: inline-block; /* Ensures it behaves like a block-level element */
     margin-left: 20px; /* Left margin to align with the <p> tag above */
 }
 
 .language-html code {
-    display: block; /* Makes each line take full width of its parent */
+    display: inline-block; /* Makes each line take full width of its parent */
     white-space: pre-wrap; /* Wraps text to next line, maintaining white spaces */
 }
 
@@ -291,11 +295,119 @@ a:focus {
     position: sticky;
     top: 0;
     width: 100%;
-    background-color: #f9f9f9;
-    padding-left: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    padding-left: 0px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     z-index: 1000;
     display: flex;
+}
+
+  .responsive-video {
+    position: relative;
+    overflow: hidden;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+  }
+  
+  .responsive-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .styled-text {
+    background-color: #e0e0e0; /* Light pastel blue background */
+    border: 1px solid #c0c0c0; /* Light blue border */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle drop shadow */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding around the text */
+    margin-bottom: 20px;
+    display: block; /* Make the element only as wide as its content */
+    float: none; /* Ensures the div does not float */
+    clear: both; /* Prevents floating elements from affecting this div */
+}
+
+.styled-heading {
+    background-color: #ecccb6; /* Very light pastel green */
+    border: 1px solid #d3b899; /* Muted pastel green border */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle drop shadow */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding around the text */
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    float: none; /* Ensures the div does not float */
+    clear: both; /* Prevents floating elements from affecting this div */
+    display: inline-block;
+}
+
+.styled-slide-title {
+    background-color: #b6dcef; /* Very light pastel green */
+    border: 1px solid #99c2d1; /* Muted pastel green border */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle drop shadow */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding around the text */
+    margin: 0px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.styled-page-title {
+    background-color: #ccffd9; /* Very light pastel green */
+    border: 1px solid #a8e0b6; /* Muted pastel green border */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle drop shadow */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding around the text */
+    margin: 0px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.rounded-slide-table {
+    border-collapse: separate; /* This is important for rounded corners */
+    border-spacing: 0; /* Removes default spacing between cells */
+    width: 100%; /* Optional: Adjust width as necessary */
+    border: 2px solid #333; /* Example border: solid, 2px, black */
+    border-radius: 8px; /* Rounded corners of 8px */
+}
+
+.rounded-slide-table tr:first-child th:first-child {
+    border-top-left-radius: 8px; /* Rounds the top left corner of the first header */
+}
+
+.rounded-sldie-table tr:first-child th:last-child {
+    border-top-right-radius: 8px; /* Rounds the top right corner of the last header */
+}
+
+.rounded-slide-table tr:last-child td:first-child {
+    border-bottom-left-radius: 8px; /* Rounds the bottom left corner of the last cell in the first column */
+}
+
+.rounded-slide-table tr:last-child td:last-child {
+    border-bottom-right-radius: 8px; /* Rounds the bottom right corner of the last cell in the last column */
+}
+
+.rounded-page-table {
+    border-collapse: separate; /* This is important for rounded corners */
+    border-spacing: 0; /* Removes default spacing between cells */
+    width: 100%; /* Optional: Adjust width as necessary */
+    border: 2px solid #333; /* Example border: solid, 2px, black */
+    border-radius: 8px; /* Rounded corners of 8px */
+}
+
+.rounded-page-table tr:first-child th:first-child {
+    border-top-left-radius: 8px; /* Rounds the top left corner of the first header */
+}
+
+.rounded-page-table tr:first-child th:last-child {
+    border-top-right-radius: 8px; /* Rounds the top right corner of the last header */
+}
+
+.rounded-page-table tr:last-child td:first-child {
+    border-bottom-left-radius: 8px; /* Rounds the bottom left corner of the last cell in the first column */
+}
+
+.rounded-page-table tr:last-child td:last-child {
+    border-bottom-right-radius: 8px; /* Rounds the bottom right corner of the last cell in the last column */
 }

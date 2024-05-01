@@ -120,12 +120,12 @@
             });
         });
 
-        $(document).on('click', '.section-link', function(e) {
+        $(document).on('click', '.page-link', function(e) {
             e.preventDefault();
-            let sectionId = $(this).data('section-id');
-            let pagesDiv = $('#content');  // Correctly targeting the main content area
+            let pageId = $(this).data('page-id');
+            let pagesDiv = $('#content');
             $.ajax({
-                url: `/textbook/api/pages/${sectionId}`,
+                url: `/textbook/api/pages/${pageId}`,
                 method: 'GET',
                 success: function(pages) {
                     pagesDiv.empty(); // Clear existing content in the main content area

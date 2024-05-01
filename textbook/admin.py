@@ -67,6 +67,7 @@ class SyllabusIndicatorAdmin(admin.ModelAdmin):
 class LessonAdmin(admin.ModelAdmin):
     list_display = ('lesson_title', 'lesson_number')
     filter_horizontal = ('syllabus_content', 'syllabus_outcomes', 'pages',)
+    ordering = ('lesson_number',)
 
 class AssessmentTaskAdmin(admin.ModelAdmin):
     list_display = ('assessment_number', 'assessment_title', 'due_date')

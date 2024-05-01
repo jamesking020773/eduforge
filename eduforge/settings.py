@@ -23,21 +23,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-#%hxiabnj#9x-1#d@3#qk9g_bwq84vp(8a7!w*r2&twoj%k^+i'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django-eforge.eba-xidrrjzv.us-west-2.elasticbeanstalk.com']
 
 ALLOWED_HOSTS = []
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/users/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'  # Adjust if you have a specific page to redirect to after logout
-
-# Application definition
+LOGOUT_REDIRECT_URL = '/accounts/login/' 
 
 INSTALLED_APPS = [
     'textbook',
     'users',
-    'ckeditor',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
