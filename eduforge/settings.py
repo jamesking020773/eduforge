@@ -23,11 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-#%hxiabnj#9x-1#d@3#qk9g_bwq84vp(8a7!w*r2&twoj%k^+i'
 
-DEBUG = True
+DEBUG = False
 
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django-eforge.eba-xidrrjzv.us-west-2.elasticbeanstalk.com']
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '103.89.14.56']
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/users/'
